@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/reg_background_3"
+    tools:context=".MainActivity">
+
+
+    <EditText
+        android:id="@+id/name"
+        android:layout_width="246dp"
+        android:layout_height="51dp"
+
+        android:layout_marginTop="94dp"
+
+        android:inputType="text"
+        android:background="@drawable/custom_input"
+        android:drawableStart="@drawable/ic_name_et"
+        android:drawablePadding="12dp"
+        android:gravity="center"
+        android:hint="name"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.042"
+        tools:ignore="MissingConstraints" />
+
+    <EditText
+        android:id="@+id/email"
+        android:layout_width="246dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="196dp"
+        android:background="@drawable/custom_input"
+
+        android:inputType="textEmailAddress"
+        android:drawableStart="@drawable/ic_mail"
+
+        android:drawablePadding="12dp"
+        android:gravity="center"
+        android:hint="email"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="246dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="272dp"
+        android:background="@drawable/custom_input"
+
+        android:inputType="textPassword"
+        android:drawableStart="@drawable/ic_lock"
+
+        android:drawablePadding="12dp"
+        android:gravity="center"
+        android:hint="password"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/btnRegister"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="Register"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.07"
+        app:layout_constraintHorizontal_bias="0.506"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.601"
+        app:layout_constraintWidth_percent="0.6" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
