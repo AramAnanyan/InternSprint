@@ -3,6 +3,7 @@ package com.example.internsprint2;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -15,7 +16,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
@@ -27,12 +31,16 @@ public class MainActivity extends AppCompatActivity {
 
     FirebaseAuth auth;
     FirebaseDatabase database;
+    FirebaseFirestore firestore;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        //startActivity(intent);
         setContentView(R.layout.activity_main);
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
+        firestore = FirebaseFirestore.getInstance();
 
         name = findViewById(R.id.name);
         email = findViewById(R.id.email);
@@ -71,10 +79,24 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(intent);
                     UserModel userModel = new UserModel(userName, userEmail, userPassword);
-                    String id = task.getResult().getUser().getUid();
+                    String id = Objects.requireNonNull(task.getResult().getUser()).getUid();
                     database.getReference().child("Users").child(id).setValue(userModel);
-                    Toast.makeText(MainActivity.this, "successfully registered", Toast.LENGTH_SHORT).show();
+
+                    final HashMap<String,Object> cartMap = new HashMap<>();
+                    cartMap.put("userName", userName);
+                    cartMap.put("userEmail", userEmail);
+
+                    firestore.collection("Users").add(cartMap).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentReference> task) {
+                                Toast.makeText(MainActivity.this, "successfully registered", Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
+                        });
+
 
                 }
                 else{

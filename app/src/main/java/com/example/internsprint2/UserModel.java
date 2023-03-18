@@ -4,6 +4,7 @@ public class UserModel {
     private String name;
     private String email;
     private String password;
+    private String documentId;
 
     public UserModel() {
     }
@@ -13,6 +14,19 @@ public class UserModel {
         this.email = email;
         this.password = password;
 
+    }
+    public UserModel(String name, String email) {
+        this.name = name;
+        this.email = email;
+
+    }
+
+    public String getDocumentId() {
+        return documentId;
+    }
+
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
     }
 
     public String getEmail() {
