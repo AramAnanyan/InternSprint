@@ -8,85 +8,57 @@
     tools:context=".MainActivity">
 
 
-    <EditText
-        android:id="@+id/name"
-        android:layout_width="246dp"
-        android:layout_height="51dp"
-
-
-        android:layout_marginTop="94dp"
-
-        android:paddingLeft="5dp"
-
-        android:inputType="text"
-        android:background="@drawable/custom_input"
-        android:drawableStart="@drawable/ic_name_et"
-        android:drawablePadding="12dp"
-        android:gravity="center"
-        android:hint="name"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.042"
-        tools:ignore="MissingConstraints" />
-
-    <EditText
-        android:id="@+id/email"
-        android:layout_width="246dp"
-        android:layout_height="51dp"
-        android:layout_marginTop="196dp"
-        android:background="@drawable/custom_input"
-
-        android:inputType="textEmailAddress"
-        android:drawableStart="@drawable/ic_mail"
-
-        android:paddingLeft="5dp"
-        android:drawablePadding="12dp"
-        android:gravity="center"
-        android:hint="email"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
-
-    <EditText
-        android:id="@+id/password"
-        android:layout_width="246dp"
-        android:layout_height="51dp"
-        android:layout_marginTop="272dp"
-        android:background="@drawable/custom_input"
-
-        android:inputType="textPassword"
-        android:drawableStart="@drawable/ic_lock"
-
-        android:paddingLeft="5dp"
-
-        android:drawablePadding="12dp"
-        android:gravity="center"
-        android:hint="password"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
-
     <Button
-        android:id="@+id/btnRegister"
+        android:id="@+id/btnRegisterAsUser"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:text="Register"
         android:background="@drawable/button_background"
+        android:text="Register As job seeker"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.07"
-        app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.601"
+        app:layout_constraintVertical_bias="0.227"
+        app:layout_constraintWidth_percent="0.6" />
+
+    <Button
+        android:id="@+id/btnRegisterAsEmployer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/button_background"
+        android:text="Register As employer"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.07"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.319"
+        app:layout_constraintWidth_percent="0.6" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="or login if you already have an account"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="86dp"
+        tools:layout_editor_absoluteY="306dp" />
+
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/button_background"
+        android:text="Login"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.07"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.52"
         app:layout_constraintWidth_percent="0.6" />
 
 

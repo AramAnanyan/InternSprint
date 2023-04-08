@@ -3,7 +3,6 @@ package com.example.internsprint2;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -19,54 +18,40 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.auth.User;
 
 import java.util.HashMap;
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity {
+public class RegistrationAsUserActivity extends AppCompatActivity {
+    EditText name;
+    EditText surName;
 
-    Button btnRegisterUser;
-    Button btnRegisterEmployer;
+    EditText email;
+    EditText password;
+    Button btnRegister;
 
     FirebaseAuth auth;
     FirebaseDatabase database;
     FirebaseFirestore firestore;
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-        if(auth.getCurrentUser()!=null){
-            Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-            startActivity(intent);
-        }
-
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_registration_as_user);
 
 
-        btnRegisterEmployer=findViewById(R.id.btnRegisterAsEmployer);
-        btnRegisterUser=findViewById(R.id.btnRegisterAsUser);
 
-        btnRegisterUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-                startActivity(intent);
-            }
-        });
-        btnRegisterEmployer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-                startActivity(intent);
-            }
-        });
-        /*auth = FirebaseAuth.getInstance();
+
+        auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         firestore = FirebaseFirestore.getInstance();
 
         name = findViewById(R.id.name);
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
+
+        surName = findViewById(R.id.surname);
 
         btnRegister = findViewById(R.id.btnRegister);
 
@@ -83,12 +68,19 @@ public class MainActivity extends AppCompatActivity {
         String userName = name.getText().toString();
         String userEmail = email.getText().toString();
         String userPassword = password.getText().toString();
+        String userSurName = password.getText().toString();
+
 
 
         if(TextUtils.isEmpty(userName)){
             //Toast.makeText(MainActivity.this, "username cant be null", Toast.LENGTH_SHORT).show();
             return;
         }
+        if(TextUtils.isEmpty(userSurName)){
+            //Toast.makeText(MainActivity.this, "username cant be null", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         if(TextUtils.isEmpty(userEmail)){
             //Toast.makeText(MainActivity.this, "email cant be null", Toast.LENGTH_SHORT).show();
             return;
@@ -101,36 +93,33 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    Intent intent = new Intent(RegistrationAsUserActivity.this, LoginActivity.class);
                     startActivity(intent);
-                    UserModel userModel = new UserModel(userName, userEmail, userPassword);
+                    UserModel userModel = new UserModel(userName, userEmail, userPassword,userSurName);
                     String id = Objects.requireNonNull(task.getResult().getUser()).getUid();
                     database.getReference().child("Users").child(id).setValue(userModel);
 
                     final HashMap<String,Object> cartMap = new HashMap<>();
                     cartMap.put("userName", userName);
                     cartMap.put("userEmail", userEmail);
+                    cartMap.put("userSurName", userSurName);
+                    cartMap.put("userBiography", null);
+
 
                     firestore.collection("Users").add(cartMap).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentReference> task) {
-                                Toast.makeText(MainActivity.this, "successfully registered", Toast.LENGTH_SHORT).show();
-                                finish();
-                            }
-                        });
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentReference> task) {
+                            Toast.makeText(RegistrationAsUserActivity.this, "successfully registered", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    });
 
 
                 }
                 else{
-                    Toast.makeText(MainActivity.this, Objects.requireNonNull(task.getException()).toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegistrationAsUserActivity.this, Objects.requireNonNull(task.getException()).toString(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
-*/
-
-
-
-
-
     }
 }

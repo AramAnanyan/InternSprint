@@ -1,26 +1,25 @@
 package com.example.internsprint2;
 
-public class UserModel {
+public class EmployerModel {
     private String name;
+    private String surName;
     private String email;
     private String password;
-    private String surName;
-    private String biography;
-    private String documentId;
+    private String workPlace;
+    //private String documentId;
 
-    public UserModel() {
-    }
 
-    public UserModel(String name, String email, String password,String surName) {
+
+    public EmployerModel(String name, String email, String password,String surName,String workPlace) {
+
         this.name = name;
         this.email = email;
         this.password = password;
+        this.workPlace = workPlace;
         this.surName = surName;
-        this.biography=null;
-
     }
 
-
+/*
     public String getDocumentId() {
         return documentId;
     }
@@ -28,7 +27,7 @@ public class UserModel {
     public void setDocumentId(String documentId) {
         this.documentId = documentId;
     }
-
+*/
     public String getEmail() {
         return email;
     }
@@ -59,14 +58,11 @@ public class UserModel {
     public void setSurName(String surName) {
         this.surName = surName;
     }
-    public String getBiography() {
-        return biography;
+    public String getWorkPlace() {
+        return workPlace;
     }
 
-    public void setBiography(String biography) {
-        this.biography = biography;
+    public void setWorkPlace(String workPlace) {
+        this.workPlace = workPlace;
     }
-
-
-
 }
