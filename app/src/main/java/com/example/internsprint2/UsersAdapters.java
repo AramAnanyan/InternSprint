@@ -1,7 +1,6 @@
 package com.example.internsprint2;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,11 +9,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-
-import java.io.Serializable;
 import java.util.List;
+
+import Models.UserModel;
 /*
 public class UsersAdapters extends FirestoreRecyclerAdapter<UserModel, UsersAdapters.UserHolder> {
 
@@ -66,7 +63,7 @@ public class UsersAdapters extends RecyclerView.Adapter<UsersAdapters.ViewHolder
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         holder.name.setText(userModelList.get(position).getName());
-        holder.email.setText(userModelList.get(position).getEmail());
+        holder.userSurName.setText(userModelList.get(position).getEmail());
 
     }
 
@@ -77,12 +74,12 @@ public class UsersAdapters extends RecyclerView.Adapter<UsersAdapters.ViewHolder
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView name, email;
+        TextView name, userSurName;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.userName);
-            email = itemView.findViewById(R.id.userEmail);
+            userSurName = itemView.findViewById(R.id.userSurName);
         }
     }
 }

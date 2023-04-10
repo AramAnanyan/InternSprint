@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import Models.EmployerModel;
+
 
 public class EmployersAdapter extends RecyclerView.Adapter<EmployersAdapter.ViewHolder> {
     private Context context;

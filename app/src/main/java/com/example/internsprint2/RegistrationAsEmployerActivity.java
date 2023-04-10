@@ -22,12 +22,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Objects;
 
-import Models.UserModel;
+import Models.EmployerModel;
 
-public class RegistrationAsUserActivity extends AppCompatActivity {
+public class RegistrationAsEmployerActivity extends AppCompatActivity {
+
     EditText name;
     EditText surName;
-
+    EditText workPlace;
     EditText email;
     EditText password;
     Button btnRegister;
@@ -39,7 +40,7 @@ public class RegistrationAsUserActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registration_as_user);
+        setContentView(R.layout.activity_registration_as_employer);
 
 
 
@@ -51,7 +52,7 @@ public class RegistrationAsUserActivity extends AppCompatActivity {
         name = findViewById(R.id.name);
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
-
+        workPlace = findViewById(R.id.workplace);
         surName = findViewById(R.id.surname);
 
         btnRegister = findViewById(R.id.btnRegister);
@@ -70,7 +71,7 @@ public class RegistrationAsUserActivity extends AppCompatActivity {
         String userEmail = email.getText().toString();
         String userPassword = password.getText().toString();
         String userSurName = password.getText().toString();
-
+        String userWorkPlace = password.getText().toString();
 
 
         if(TextUtils.isEmpty(userName)){
@@ -81,7 +82,10 @@ public class RegistrationAsUserActivity extends AppCompatActivity {
             //Toast.makeText(MainActivity.this, "username cant be null", Toast.LENGTH_SHORT).show();
             return;
         }
-
+        if(TextUtils.isEmpty(userWorkPlace)){
+            //Toast.makeText(MainActivity.this, "username cant be null", Toast.LENGTH_SHORT).show();
+            return;
+        }
         if(TextUtils.isEmpty(userEmail)){
             //Toast.makeText(MainActivity.this, "email cant be null", Toast.LENGTH_SHORT).show();
             return;
@@ -94,23 +98,22 @@ public class RegistrationAsUserActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    Intent intent = new Intent(RegistrationAsUserActivity.this, LoginActivity.class);
+                    Intent intent = new Intent(RegistrationAsEmployerActivity.this, LoginActivity.class);
                     startActivity(intent);
-                    UserModel userModel = new UserModel(userName, userEmail, userPassword,userSurName);
+                    EmployerModel employerModel = new EmployerModel(userName, userEmail, userPassword,userSurName,userWorkPlace);
                     String id = Objects.requireNonNull(task.getResult().getUser()).getUid();
-                    database.getReference().child("Users").child(id).setValue(userModel);
+                    database.getReference().child("Users").child(id).setValue(employerModel);
 
                     final HashMap<String,Object> cartMap = new HashMap<>();
                     cartMap.put("userName", userName);
                     cartMap.put("userEmail", userEmail);
                     cartMap.put("userSurName", userSurName);
-                    cartMap.put("userBiography", null);
-
+                    cartMap.put("userWorkPlace", userWorkPlace);
 
                     firestore.collection("Users").add(cartMap).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentReference> task) {
-                            Toast.makeText(RegistrationAsUserActivity.this, "successfully registered", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegistrationAsEmployerActivity.this, "successfully registered", Toast.LENGTH_SHORT).show();
                             finish();
                         }
                     });
@@ -118,7 +121,7 @@ public class RegistrationAsUserActivity extends AppCompatActivity {
 
                 }
                 else{
-                    Toast.makeText(RegistrationAsUserActivity.this, Objects.requireNonNull(task.getException()).toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegistrationAsEmployerActivity.this, Objects.requireNonNull(task.getException()).toString(), Toast.LENGTH_SHORT).show();
                 }
             }
         });

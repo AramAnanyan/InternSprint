@@ -12,6 +12,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:id="@+id/navigationBar"
+            android:background="@drawable/ic_navigation"
+            tools:ignore="MissingConstraints" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,15 +30,12 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewUsers"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"/>
 
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_marginStart="10dp"
-            android:id="@+id/recyclerViewWorkers"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

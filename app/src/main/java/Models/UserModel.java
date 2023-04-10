@@ -1,4 +1,4 @@
-package com.example.internsprint2;
+package Models;
 
 public class UserModel {
     private String name;
