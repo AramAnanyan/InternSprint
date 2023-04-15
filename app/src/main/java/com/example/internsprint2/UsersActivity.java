@@ -1,5 +1,6 @@
 package com.example.internsprint2;
 
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -66,26 +68,35 @@ public class UsersActivity extends AppCompatActivity {
             public void onClick(View v) {
 
 
-                navigationView.setItemIconTintList(null);
-                navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+                drawerLayout.openDrawer(GravityCompat.START);
 
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.menuHome:
-                                drawerLayout.closeDrawer(GravityCompat.START);
-                                break;
+            }
+        });
+        navigationView.setItemIconTintList(null);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 
-                            case R.id.menuProfile:
-                                drawerLayout.closeDrawer(GravityCompat.START);
-                                // startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
-                                break;
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.users:
+
+                        //Intent intent=new Intent(UsersActivity.this, UsersActivity.class);
+
+                        drawerLayout.closeDrawer(GravityCompat.START);
+
+                        break;
+
+                    case R.id.employers:
+                        Intent intent=new Intent(UsersActivity.this, EmployersActivity.class);
+                        startActivity(intent);
+
+                        drawerLayout.closeDrawer(GravityCompat.START);
+                        // startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
+                        break;
 
 
-                        }
-                        return true;
-                    }
-                });
+                }
+                return true;
             }
         });
         firestore.collection("Users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -98,7 +109,7 @@ public class UsersActivity extends AppCompatActivity {
                         UserModel userModel = documentSnapshot.toObject(UserModel.class);
 
                         userModel.setName(documentSnapshot.getString("userName"));
-                        userModel.setSurName(documentSnapshot.getString("userEmail"));
+                        userModel.setSurName(documentSnapshot.getString("userSurName"));
                         userModel.setEmail(documentSnapshot.getString("userEmail"));
                         //userModel.setBiography(documentSnapshot.getString("userEmail"));
                         userModelList.add(userModel);

@@ -63,7 +63,7 @@ public class UsersAdapters extends RecyclerView.Adapter<UsersAdapters.ViewHolder
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         holder.name.setText(userModelList.get(position).getName());
-        holder.userSurName.setText(userModelList.get(position).getEmail());
+        holder.userSurName.setText(userModelList.get(position).getSurName());
 
     }
 

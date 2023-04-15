@@ -35,12 +35,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-      /*  if(auth.getCurrentUser()!=null){
-            Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-            startActivity(intent);
-        }
 
-*/Intent intent = new Intent(MainActivity.this, UsersActivity.class);
+
+        Intent intent = new Intent(MainActivity.this, EmployersActivity.class);
         startActivity(intent);
         setContentView(R.layout.activity_main);
 
@@ -53,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, RegistrationAsUserActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
         btnRegisterEmployer.setOnClickListener(new View.OnClickListener() {
@@ -60,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, RegistrationAsEmployerActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 

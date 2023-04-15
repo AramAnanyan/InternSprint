@@ -10,6 +10,10 @@ public class EmployerModel {
 
 
 
+
+    public EmployerModel() {
+
+    }
     public EmployerModel(String name, String email, String password,String surName,String workPlace) {
 
         this.name = name;

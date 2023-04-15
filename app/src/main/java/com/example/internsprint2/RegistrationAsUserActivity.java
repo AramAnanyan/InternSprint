@@ -30,6 +30,7 @@ public class RegistrationAsUserActivity extends AppCompatActivity {
 
     EditText email;
     EditText password;
+    EditText surname;
     Button btnRegister;
 
     FirebaseAuth auth;
@@ -52,7 +53,7 @@ public class RegistrationAsUserActivity extends AppCompatActivity {
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
 
-        surName = findViewById(R.id.surname);
+        surname = findViewById(R.id.surname);
 
         btnRegister = findViewById(R.id.btnRegister);
 
@@ -69,7 +70,7 @@ public class RegistrationAsUserActivity extends AppCompatActivity {
         String userName = name.getText().toString();
         String userEmail = email.getText().toString();
         String userPassword = password.getText().toString();
-        String userSurName = password.getText().toString();
+        String userSurName = surname.getText().toString();
 
 
 
@@ -96,7 +97,7 @@ public class RegistrationAsUserActivity extends AppCompatActivity {
                 if(task.isSuccessful()){
                     Intent intent = new Intent(RegistrationAsUserActivity.this, LoginActivity.class);
                     startActivity(intent);
-                    UserModel userModel = new UserModel(userName, userEmail, userPassword,userSurName);
+                    UserModel userModel = new UserModel(userName, userEmail, userPassword, userSurName);
                     String id = Objects.requireNonNull(task.getResult().getUser()).getUid();
                     database.getReference().child("Users").child(id).setValue(userModel);
 
@@ -104,7 +105,7 @@ public class RegistrationAsUserActivity extends AppCompatActivity {
                     cartMap.put("userName", userName);
                     cartMap.put("userEmail", userEmail);
                     cartMap.put("userSurName", userSurName);
-                    cartMap.put("userBiography", null);
+                    cartMap.put("userBiography", "es lav tgha em");
 
 
                     firestore.collection("Users").add(cartMap).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
