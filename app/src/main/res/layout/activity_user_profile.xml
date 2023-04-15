@@ -61,10 +61,13 @@
             <ImageView
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                android:src="@drawable/ic_mail"/>
+                android:src="@drawable/ic_name_et"
+
+                />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/profileName"
                 android:text=""
                 android:textColor="#000"
                 android:textSize="18dp"
@@ -81,13 +84,15 @@
             <ImageView
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                android:src="@drawable/ic_work"/>
+                android:src="@drawable/ic_name_et"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/profileSurName"
                 android:text=""
                 android:textColor="#000"
                 android:textSize="18dp"
+
                 android:paddingLeft="15dp"
                 android:layout_gravity="center_vertical"/>
 
