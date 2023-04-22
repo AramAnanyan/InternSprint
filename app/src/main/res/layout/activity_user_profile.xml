@@ -159,7 +159,8 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Edit"
+        android:id="@+id/logout"
+        android:text="Log out"
         android:layout_gravity="center_horizontal"
         android:textSize="18dp"
         android:layout_marginTop="15dp"/>

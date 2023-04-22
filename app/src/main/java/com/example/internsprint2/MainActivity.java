@@ -46,7 +46,9 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        /*if (auth.getCurrentUser() != null) {
+        auth = FirebaseAuth.getInstance();
+        database=FirebaseDatabase.getInstance();
+        if (auth.getCurrentUser() != null) {
             database.getReference().child("Employers").child(auth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -72,10 +74,9 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             });
-        }*/
+        }
         super.onCreate(savedInstanceState);
-        auth = FirebaseAuth.getInstance();
-        database=FirebaseDatabase.getInstance();
+
 
             /*Intent intent = new Intent(MainActivity.this, EmployersActivity.class);
             startActivity(intent);*/

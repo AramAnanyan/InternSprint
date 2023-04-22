@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +45,7 @@ import Models.UserModel;
 public class UserProfileActivity extends AppCompatActivity {
     FirebaseDatabase database;
 
+
     FirebaseAuth auth;
     FirebaseFirestore firestore;
     DrawerLayout drawerLayout;
@@ -54,6 +56,7 @@ public class UserProfileActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
         setContentView(R.layout.activity_user_profile);
+        Button logout=findViewById(R.id.logout);
         TextView name = findViewById(R.id.profileName);
         TextView email = findViewById(R.id.profileEmail);
         TextView surname = findViewById(R.id.profileSurName);
@@ -128,6 +131,15 @@ public class UserProfileActivity extends AppCompatActivity {
         });
 
 
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                auth.signOut();
+                Intent intent=new Intent(UserProfileActivity.this,MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
 
     }

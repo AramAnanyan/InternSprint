@@ -1,5 +1,6 @@
 package com.example.internsprint2;
 
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,6 +56,7 @@ public class EmployerProfileActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
         setContentView(R.layout.activity_employer_profile);
+        Button logout=findViewById(R.id.logout);
         TextView name = findViewById(R.id.profileName);
         TextView email = findViewById(R.id.profileEmail);
         TextView surname = findViewById(R.id.profileSurName);
@@ -74,6 +77,7 @@ public class EmployerProfileActivity extends AppCompatActivity {
 
             }
         });
+
         navigationView.setItemIconTintList(null);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 
@@ -130,9 +134,14 @@ public class EmployerProfileActivity extends AppCompatActivity {
 
             }
         });
-
-
-
-
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                auth.signOut();
+                Intent intent=new Intent(EmployerProfileActivity.this,MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 }
