@@ -67,58 +67,58 @@ public class RegistrationAsEmployerActivity extends AppCompatActivity {
     }
 
     private void register() {
-        String userName = name.getText().toString();
-        String userEmail = email.getText().toString();
-        String userPassword = password.getText().toString();
-        String userSurName = password.getText().toString();
-        String userWorkPlace = password.getText().toString();
+        String employerName = name.getText().toString();
+        String employerEmail = email.getText().toString();
+        String employerPassword = password.getText().toString();
+        String employerSurName = surName.getText().toString();
+        String employerWorkPlace = workPlace.getText().toString();
 
 
-        if(TextUtils.isEmpty(userName)){
+        if(TextUtils.isEmpty(employerName)){
             //Toast.makeText(MainActivity.this, "username cant be null", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(TextUtils.isEmpty(userSurName)){
+        if(TextUtils.isEmpty(employerSurName)){
             //Toast.makeText(MainActivity.this, "username cant be null", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(TextUtils.isEmpty(userWorkPlace)){
+        if(TextUtils.isEmpty(employerWorkPlace)){
             //Toast.makeText(MainActivity.this, "username cant be null", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(TextUtils.isEmpty(userEmail)){
+        if(TextUtils.isEmpty(employerEmail)){
             //Toast.makeText(MainActivity.this, "email cant be null", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(TextUtils.isEmpty(userPassword)){
+        if(TextUtils.isEmpty(employerPassword)){
             //Toast.makeText(MainActivity.this, "password cant be null", Toast.LENGTH_SHORT).show();
             return;
         }
-        auth.createUserWithEmailAndPassword(userEmail, userPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        auth.createUserWithEmailAndPassword(employerEmail, employerPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    Intent intent = new Intent(RegistrationAsEmployerActivity.this, LoginActivity.class);
-                    startActivity(intent);
-                    EmployerModel employerModel = new EmployerModel(userName, userEmail, userPassword,userSurName,userWorkPlace);
+
+                    EmployerModel employerModel = new EmployerModel(employerName, employerSurName, employerWorkPlace,employerEmail,employerPassword);
                     String id = Objects.requireNonNull(task.getResult().getUser()).getUid();
-                    database.getReference().child("Users").child(id).setValue(employerModel);
+                    database.getReference().child("Employers").child(id).setValue(employerModel);
+
 
                     final HashMap<String,Object> cartMap = new HashMap<>();
-                    cartMap.put("userName", userName);
-                    cartMap.put("userEmail", userEmail);
-                    cartMap.put("userSurName", userSurName);
-                    cartMap.put("userWorkPlace", userWorkPlace);
+                    cartMap.put("name", employerName);
+                    cartMap.put("surname", employerSurName);
+                    cartMap.put("email", employerEmail);
+                    cartMap.put("workPlace", employerWorkPlace);
 
-                    firestore.collection("Users").add(cartMap).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                    firestore.collection("Employers").add(cartMap).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentReference> task) {
                             Toast.makeText(RegistrationAsEmployerActivity.this, "successfully registered", Toast.LENGTH_SHORT).show();
                             finish();
                         }
                     });
-
-
+                    Intent intent = new Intent(RegistrationAsEmployerActivity.this, LoginActivity.class);
+                    startActivity(intent);
                 }
                 else{
                     Toast.makeText(RegistrationAsEmployerActivity.this, Objects.requireNonNull(task.getException()).toString(), Toast.LENGTH_SHORT).show();

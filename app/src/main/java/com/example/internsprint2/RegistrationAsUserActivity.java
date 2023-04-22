@@ -95,17 +95,15 @@ public class RegistrationAsUserActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    Intent intent = new Intent(RegistrationAsUserActivity.this, LoginActivity.class);
-                    startActivity(intent);
                     UserModel userModel = new UserModel(userName, userEmail, userPassword, userSurName);
                     String id = Objects.requireNonNull(task.getResult().getUser()).getUid();
                     database.getReference().child("Users").child(id).setValue(userModel);
 
                     final HashMap<String,Object> cartMap = new HashMap<>();
                     cartMap.put("userName", userName);
-                    cartMap.put("userEmail", userEmail);
                     cartMap.put("userSurName", userSurName);
-                    cartMap.put("userBiography", "es lav tgha em");
+                    cartMap.put("userEmail", userEmail);
+                    cartMap.put("userBiography", "ok");
 
 
                     firestore.collection("Users").add(cartMap).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
@@ -115,6 +113,8 @@ public class RegistrationAsUserActivity extends AppCompatActivity {
                             finish();
                         }
                     });
+                    Intent intent = new Intent(RegistrationAsUserActivity.this, LoginActivity.class);
+                    startActivity(intent);
 
 
                 }

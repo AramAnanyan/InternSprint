@@ -6,15 +6,17 @@ public class EmployerModel {
     private String email;
     private String password;
     private String workPlace;
+
     //private String documentId;
-
-
 
 
     public EmployerModel() {
 
+        email="null";
     }
-    public EmployerModel(String name, String email, String password,String surName,String workPlace) {
+
+    public EmployerModel(String name,  String surName, String workPlace,String email, String password) {
+
 
         this.name = name;
         this.email = email;
@@ -23,15 +25,17 @@ public class EmployerModel {
         this.surName = surName;
     }
 
-/*
-    public String getDocumentId() {
-        return documentId;
-    }
+    /*
+        public String getDocumentId() {
+            return documentId;
+        }
 
-    public void setDocumentId(String documentId) {
-        this.documentId = documentId;
-    }
-*/
+        public void setDocumentId(String documentId) {
+            this.documentId = documentId;
+        }
+    */
+
+
     public String getEmail() {
         return email;
     }
@@ -55,6 +59,7 @@ public class EmployerModel {
     public void setName(String name) {
         this.name = name;
     }
+
     public String getSurName() {
         return surName;
     }
@@ -62,6 +67,7 @@ public class EmployerModel {
     public void setSurName(String surName) {
         this.surName = surName;
     }
+
     public String getWorkPlace() {
         return workPlace;
     }

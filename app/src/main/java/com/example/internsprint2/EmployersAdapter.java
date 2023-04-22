@@ -34,7 +34,6 @@ public class EmployersAdapter extends RecyclerView.Adapter<EmployersAdapter.View
 
         holder.name.setText(employerModelList.get(position).getName());
         holder.surName.setText(employerModelList.get(position).getSurName());
-
     }
 
     @Override

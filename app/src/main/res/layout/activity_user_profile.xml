@@ -1,17 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#B5BAD1BA"
+
+    android:id="@+id/drawerLayout"
     tools:context=".UserProfileActivity">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#B5BAD1BA">
+
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="300dp">
-
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/navigationBar"
+            android:background="@drawable/ic_navigation"
+            tools:ignore="MissingConstraints" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="300dp"
@@ -30,15 +42,17 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:src="@drawable/def_img"
                      />
             </androidx.cardview.widget.CardView>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/profileNameTop"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp"
-                android:text="Aram"
+
                 android:textColor="#fff"
                 android:textSize="23dp"
                 android:textStyle="bold" />
@@ -105,11 +119,13 @@
             android:layout_marginLeft="25dp">
             <ImageView
                 android:layout_width="45dp"
-                android:layout_height="45dp"/>
-                <!--android:src="@drawable/ic_baseline_location_on_24"/>-->
+                android:layout_height="45dp"
+                android:src="@drawable/ic_mail"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/profileEmail"
                 android:text=""
                 android:textColor="#000"
                 android:textSize="18dp"
@@ -125,8 +141,9 @@
             android:layout_marginLeft="25dp">
             <ImageView
                 android:layout_width="45dp"
-                android:layout_height="45dp"/>
-                <!--android:src="@drawable/ic_baseline_insert_comment_24"/>-->
+                android:layout_height="45dp"
+                />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -142,10 +159,17 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Follow me"
+        android:text="Edit"
         android:layout_gravity="center_horizontal"
         android:textSize="18dp"
         android:layout_marginTop="15dp"/>
 
 </LinearLayout>
-
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav"
+        android:layout_width="wrap_content"
+        app:menu="@menu/menu"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true" />
+</androidx.drawerlayout.widget.DrawerLayout>

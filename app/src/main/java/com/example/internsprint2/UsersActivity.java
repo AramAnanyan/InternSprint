@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,6 +21,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -28,6 +33,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
+import Models.EmployerModel;
 import Models.UserModel;
 
 public class UsersActivity extends AppCompatActivity {
@@ -39,6 +45,7 @@ public class UsersActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
     NavigationView navigationView;
 
+    FirebaseDatabase database;
 
     FirebaseAuth auth;
     RecyclerView recyclerViewUsers;
@@ -52,7 +59,9 @@ public class UsersActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_users);
 
+
         auth = FirebaseAuth.getInstance();
+        database=FirebaseDatabase.getInstance();
         firestore = FirebaseFirestore.getInstance();
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.nav);
@@ -93,9 +102,41 @@ public class UsersActivity extends AppCompatActivity {
                         drawerLayout.closeDrawer(GravityCompat.START);
                         // startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
                         break;
+                    case R.id.profile:
+                        database.getReference().child("Employers").child(auth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                EmployerModel employerModel = snapshot.getValue(EmployerModel.class);
+                                Intent intent;
+                                try {
+
+                                    if (employerModel.getEmail() != null) {
+                                        intent = new Intent(UsersActivity.this, EmployerProfileActivity.class);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                } catch (Exception ex) {
 
 
+                                    intent = new Intent(UsersActivity.this, UserProfileActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+
+
+                            }
+
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                        break;
                 }
+
+
+
                 return true;
             }
         });
@@ -111,7 +152,7 @@ public class UsersActivity extends AppCompatActivity {
                         userModel.setName(documentSnapshot.getString("userName"));
                         userModel.setSurName(documentSnapshot.getString("userSurName"));
                         userModel.setEmail(documentSnapshot.getString("userEmail"));
-                        //userModel.setBiography(documentSnapshot.getString("userEmail"));
+
                         userModelList.add(userModel);
 
                         usersAdapters.notifyDataSetChanged();
@@ -130,4 +171,5 @@ public class UsersActivity extends AppCompatActivity {
 
         recyclerViewUsers.setAdapter(usersAdapters);
     }
+
 }

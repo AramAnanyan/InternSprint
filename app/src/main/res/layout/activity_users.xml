@@ -13,8 +13,8 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:id="@+id/navigationBar"
             android:background="@drawable/ic_navigation"
             tools:ignore="MissingConstraints" />

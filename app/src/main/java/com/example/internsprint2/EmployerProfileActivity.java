@@ -41,7 +41,7 @@ import java.util.Objects;
 import Models.EmployerModel;
 import Models.UserModel;
 
-public class UserProfileActivity extends AppCompatActivity {
+public class EmployerProfileActivity extends AppCompatActivity {
     FirebaseDatabase database;
 
     FirebaseAuth auth;
@@ -53,11 +53,12 @@ public class UserProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         auth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
-        setContentView(R.layout.activity_user_profile);
+        setContentView(R.layout.activity_employer_profile);
         TextView name = findViewById(R.id.profileName);
         TextView email = findViewById(R.id.profileEmail);
         TextView surname = findViewById(R.id.profileSurName);
         TextView topName = findViewById(R.id.profileNameTop);
+        TextView workplace = findViewById(R.id.profileWorkplace);
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.nav);
 
@@ -82,7 +83,7 @@ public class UserProfileActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.users:
 
-                        Intent intent=new Intent(UserProfileActivity.this, UsersActivity.class);
+                        Intent intent=new Intent(EmployerProfileActivity.this, UsersActivity.class);
                         startActivity(intent);
                         finish();
                         drawerLayout.closeDrawer(GravityCompat.START);
@@ -90,7 +91,7 @@ public class UserProfileActivity extends AppCompatActivity {
                         break;
 
                     case R.id.employers:
-                        Intent intent2=new Intent(UserProfileActivity.this, EmployersActivity.class);
+                        Intent intent2=new Intent(EmployerProfileActivity.this, EmployersActivity.class);
                         startActivity(intent2);
                         finish();
                         drawerLayout.closeDrawer(GravityCompat.START);
@@ -99,24 +100,27 @@ public class UserProfileActivity extends AppCompatActivity {
                         break;
                     case R.id.profile:
 
-
                         drawerLayout.closeDrawer(GravityCompat.START);
                         break;
                 }
+
+
+
                 return true;
             }
         });
         database = FirebaseDatabase.getInstance();
-        database.getReference().child("Users").child(FirebaseAuth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+        database.getReference().child("Employers").child(FirebaseAuth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                UserModel userModel = snapshot.getValue(UserModel.class);
+                EmployerModel employerModel = snapshot.getValue(EmployerModel.class);
 
 
-                name.setText(userModel.getName());
-                surname.setText(userModel.getSurName());
-                email.setText(userModel.getEmail());
-                topName.setText(userModel.getName());
+                name.setText(employerModel.getName());
+                surname.setText(employerModel.getSurName());
+                email.setText(employerModel.getEmail());
+                workplace.setText(employerModel.getWorkPlace());
+                topName.setText(employerModel.getName());
 
 
             }
@@ -131,5 +135,4 @@ public class UserProfileActivity extends AppCompatActivity {
 
 
     }
-
 }

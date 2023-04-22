@@ -8,14 +8,17 @@ public class UserModel {
     private String biography;
     private String documentId;
 
-    public UserModel() {
-    }
 
+    public UserModel() {
+
+
+    }
     public UserModel(String name, String email, String password,String surName) {
+
         this.name = name;
         this.email = email;
-        this.password = password;
         this.surName = surName;
+        this.password = password;
         this.biography=null;
 
     }

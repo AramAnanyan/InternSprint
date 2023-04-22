@@ -8,5 +8,10 @@
         android:id="@+id/users"
         android:icon="@drawable/ic_baseline_person_24"
         android:title="Users"/>
+    <item
+        android:id="@+id/profile"
+        android:icon="@drawable/ic_baseline_person_24"
+        android:title="Profile"/>
+
 
 </menu>
