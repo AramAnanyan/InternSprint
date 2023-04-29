@@ -7,17 +7,18 @@ public class EmployerModel {
     private String password;
     private String workPlace;
 
-    //private String documentId;
+    private String id;
 
 
     public EmployerModel() {
 
-        email="null";
+
     }
 
-    public EmployerModel(String name,  String surName, String workPlace,String email, String password) {
+    public EmployerModel(String name, String surName, String workPlace, String email, String password,String id) {
 
 
+        this.id=id;
         this.name = name;
         this.email = email;
         this.password = password;
@@ -25,15 +26,14 @@ public class EmployerModel {
         this.surName = surName;
     }
 
-    /*
-        public String getDocumentId() {
-            return documentId;
-        }
 
-        public void setDocumentId(String documentId) {
-            this.documentId = documentId;
-        }
-    */
+    public String getid() {
+        return id;
+    }
+
+    public void setid(String id) {
+        this.id = id;
+    }
 
 
     public String getEmail() {

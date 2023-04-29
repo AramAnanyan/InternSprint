@@ -99,8 +99,8 @@ public class RegistrationAsEmployerActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
 
-                    EmployerModel employerModel = new EmployerModel(employerName, employerSurName, employerWorkPlace,employerEmail,employerPassword);
                     String id = Objects.requireNonNull(task.getResult().getUser()).getUid();
+                    EmployerModel employerModel = new EmployerModel(employerName, employerSurName, employerWorkPlace,employerEmail,employerPassword,id);
                     database.getReference().child("Employers").child(id).setValue(employerModel);
 
 
@@ -109,6 +109,7 @@ public class RegistrationAsEmployerActivity extends AppCompatActivity {
                     cartMap.put("surname", employerSurName);
                     cartMap.put("email", employerEmail);
                     cartMap.put("workPlace", employerWorkPlace);
+                    cartMap.put("id", id);
 
                     firestore.collection("Employers").add(cartMap).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                         @Override

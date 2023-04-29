@@ -95,14 +95,16 @@ public class RegistrationAsUserActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    UserModel userModel = new UserModel(userName, userEmail, userPassword, userSurName);
                     String id = Objects.requireNonNull(task.getResult().getUser()).getUid();
+                    UserModel userModel = new UserModel(userName, userEmail, userPassword, userSurName,id);
+
                     database.getReference().child("Users").child(id).setValue(userModel);
 
                     final HashMap<String,Object> cartMap = new HashMap<>();
                     cartMap.put("userName", userName);
                     cartMap.put("userSurName", userSurName);
                     cartMap.put("userEmail", userEmail);
+                    cartMap.put("userId", id);
                     cartMap.put("userBiography", "ok");
 
 
@@ -115,8 +117,6 @@ public class RegistrationAsUserActivity extends AppCompatActivity {
                     });
                     Intent intent = new Intent(RegistrationAsUserActivity.this, LoginActivity.class);
                     startActivity(intent);
-
-
                 }
                 else{
                     Toast.makeText(RegistrationAsUserActivity.this, Objects.requireNonNull(task.getException()).toString(), Toast.LENGTH_SHORT).show();

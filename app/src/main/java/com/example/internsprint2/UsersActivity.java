@@ -1,6 +1,5 @@
 package com.example.internsprint2;
 
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -11,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -35,6 +33,8 @@ import java.util.List;
 
 import Models.EmployerModel;
 import Models.UserModel;
+import com.example.internsprint2.Profiles.EmployerProfileActivity;
+import com.example.internsprint2.Profiles.UserProfileActivity;
 
 public class UsersActivity extends AppCompatActivity {
 
@@ -152,6 +152,7 @@ public class UsersActivity extends AppCompatActivity {
                         userModel.setName(documentSnapshot.getString("userName"));
                         userModel.setSurName(documentSnapshot.getString("userSurName"));
                         userModel.setEmail(documentSnapshot.getString("userEmail"));
+                        userModel.setId(documentSnapshot.getString("userId"));
 
                         userModelList.add(userModel);
 

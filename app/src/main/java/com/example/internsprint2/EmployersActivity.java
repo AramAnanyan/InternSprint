@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -33,6 +32,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Models.EmployerModel;
+import com.example.internsprint2.Profiles.EmployerProfileActivity;
+import com.example.internsprint2.Profiles.UserProfileActivity;
 
 
 public class EmployersActivity extends AppCompatActivity {
