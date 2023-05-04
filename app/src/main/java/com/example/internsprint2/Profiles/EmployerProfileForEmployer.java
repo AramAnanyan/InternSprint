@@ -25,18 +25,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import Models.EmployerModel;
 import Models.UserModel;
 
 
-
-
-
-
-
-public class UserProfileForEmployer extends AppCompatActivity {
+public class EmployerProfileForEmployer extends AppCompatActivity {
     FirebaseDatabase database;
-
-
     FirebaseAuth auth;
     FirebaseFirestore firestore;
     DrawerLayout drawerLayout;
@@ -44,17 +38,19 @@ public class UserProfileForEmployer extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_profile_for_employer);
-        Intent intent=getIntent();
+        setContentView(R.layout.activity_employer_profile_for_employer);
+        Intent intent = getIntent();
         String id=intent.getStringExtra("EXTRA");
         auth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
-        Button register=findViewById(R.id.reg);
-        Button more=findViewById(R.id.more);
+
+        Button more = findViewById(R.id.more);
         TextView name = findViewById(R.id.profileName);
         TextView email = findViewById(R.id.profileEmail);
         TextView surname = findViewById(R.id.profileSurName);
         TextView topName = findViewById(R.id.profileNameTop);
+        TextView workplace = findViewById(R.id.profileWorkplace);
+
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.nav);
 
@@ -76,7 +72,7 @@ public class UserProfileForEmployer extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.users:
 
-                        Intent intent=new Intent(UserProfileForEmployer.this, UsersActivity.class);
+                        Intent intent=new Intent(EmployerProfileForEmployer.this, UsersActivity.class);
                         startActivity(intent);
                         finish();
                         drawerLayout.closeDrawer(GravityCompat.START);
@@ -84,7 +80,7 @@ public class UserProfileForEmployer extends AppCompatActivity {
                         break;
 
                     case R.id.employers:
-                        Intent intent2=new Intent(UserProfileForEmployer.this, EmployersActivity.class);
+                        Intent intent2=new Intent(EmployerProfileForEmployer.this, EmployersActivity.class);
                         startActivity(intent2);
                         finish();
                         drawerLayout.closeDrawer(GravityCompat.START);
@@ -104,13 +100,14 @@ public class UserProfileForEmployer extends AppCompatActivity {
         database.getReference().child("Employers").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                UserModel userModel = snapshot.getValue(UserModel.class);
+                EmployerModel employerModel = snapshot.getValue(EmployerModel.class);
 
 
-                name.setText(userModel.getName());
-                surname.setText(userModel.getSurName());
-                email.setText(userModel.getEmail());
-                topName.setText(userModel.getName());
+                name.setText(employerModel.getName());
+                surname.setText(employerModel.getSurName());
+                email.setText(employerModel.getEmail());
+                topName.setText(employerModel.getName());
+                workplace.setText(employerModel.getWorkPlace());
 
 
             }
@@ -122,7 +119,7 @@ public class UserProfileForEmployer extends AppCompatActivity {
         });
 
 
-        register.setOnClickListener(new View.OnClickListener() {
+        more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //do something

@@ -1,5 +1,8 @@
 package Models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class EmployerModel {
     private String name;
     private String surName;
@@ -8,15 +11,27 @@ public class EmployerModel {
     private String workPlace;
 
     private String id;
+    private ArrayList<String> registeredUsers;
 
 
     public EmployerModel() {
 
 
+
     }
 
     public EmployerModel(String name, String surName, String workPlace, String email, String password,String id) {
+        this.registeredUsers=new ArrayList<String>();
 
+        this.id=id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.workPlace = workPlace;
+        this.surName = surName;
+    }
+    public EmployerModel(String name, String surName, String workPlace, String email, String password,String id,ArrayList<String> registeredUsers) {
+        this.registeredUsers=new ArrayList<String>();
 
         this.id=id;
         this.name = name;
@@ -27,11 +42,31 @@ public class EmployerModel {
     }
 
 
-    public String getid() {
+
+    public void addRegUserId(String id){
+        registeredUsers.add(id);
+    }
+    public void setRegUsers(ArrayList<String> users){
+        registeredUsers=users;
+    }
+    public ArrayList<String> getRegUsers(){
+        return registeredUsers;
+    }
+    public String getRegUserId(int id){
+        return registeredUsers.get(id);
+    }
+    public void deleteRegUserId(int id){
+        registeredUsers.remove(id);
+    }
+    public void deleteRegUserId(String id){
+        registeredUsers.remove(id);
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setid(String id) {
+    public void setId(String id) {
         this.id = id;
     }
 

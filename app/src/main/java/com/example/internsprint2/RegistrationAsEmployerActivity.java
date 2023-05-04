@@ -102,6 +102,7 @@ public class RegistrationAsEmployerActivity extends AppCompatActivity {
                     String id = Objects.requireNonNull(task.getResult().getUser()).getUid();
                     EmployerModel employerModel = new EmployerModel(employerName, employerSurName, employerWorkPlace,employerEmail,employerPassword,id);
                     database.getReference().child("Employers").child(id).setValue(employerModel);
+                    database.getReference().child("Employers").child(id).child("registeredUsers").setValue(employerModel.getRegUsers());
 
 
                     final HashMap<String,Object> cartMap = new HashMap<>();
@@ -110,6 +111,7 @@ public class RegistrationAsEmployerActivity extends AppCompatActivity {
                     cartMap.put("email", employerEmail);
                     cartMap.put("workPlace", employerWorkPlace);
                     cartMap.put("id", id);
+                    cartMap.put("registeredUsers", employerModel.getRegUsers());
 
                     firestore.collection("Employers").add(cartMap).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                         @Override

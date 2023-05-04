@@ -8,6 +8,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -17,14 +18,20 @@ import android.widget.TextView;
 import com.example.internsprint2.EmployersActivity;
 import com.example.internsprint2.R;
 import com.example.internsprint2.UsersActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
+
+import Models.EmployerModel;
 import Models.UserModel;
 
 
@@ -33,7 +40,7 @@ import Models.UserModel;
 
 
 
-public class UserProfileForEmployer extends AppCompatActivity {
+public class EmployerProfileForUser extends AppCompatActivity {
     FirebaseDatabase database;
 
 
@@ -41,20 +48,22 @@ public class UserProfileForEmployer extends AppCompatActivity {
     FirebaseFirestore firestore;
     DrawerLayout drawerLayout;
     NavigationView navigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_profile_for_employer);
-        Intent intent=getIntent();
-        String id=intent.getStringExtra("EXTRA");
+        setContentView(R.layout.activity_employer_profile_for_user);
+        Intent intent = getIntent();
+        String id = intent.getStringExtra("EXTRA");
         auth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
-        Button register=findViewById(R.id.reg);
-        Button more=findViewById(R.id.more);
+        Button register = findViewById(R.id.reg);
+        Button more = findViewById(R.id.more);
         TextView name = findViewById(R.id.profileName);
         TextView email = findViewById(R.id.profileEmail);
         TextView surname = findViewById(R.id.profileSurName);
         TextView topName = findViewById(R.id.profileNameTop);
+        TextView workplace = findViewById(R.id.workplace);
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.nav);
 
@@ -76,7 +85,7 @@ public class UserProfileForEmployer extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.users:
 
-                        Intent intent=new Intent(UserProfileForEmployer.this, UsersActivity.class);
+                        Intent intent = new Intent(EmployerProfileForUser.this, UsersActivity.class);
                         startActivity(intent);
                         finish();
                         drawerLayout.closeDrawer(GravityCompat.START);
@@ -84,7 +93,7 @@ public class UserProfileForEmployer extends AppCompatActivity {
                         break;
 
                     case R.id.employers:
-                        Intent intent2=new Intent(UserProfileForEmployer.this, EmployersActivity.class);
+                        Intent intent2 = new Intent(EmployerProfileForUser.this, EmployersActivity.class);
                         startActivity(intent2);
                         finish();
                         drawerLayout.closeDrawer(GravityCompat.START);
@@ -104,13 +113,14 @@ public class UserProfileForEmployer extends AppCompatActivity {
         database.getReference().child("Employers").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                UserModel userModel = snapshot.getValue(UserModel.class);
+                EmployerModel employerModel = snapshot.getValue(EmployerModel.class);
 
 
-                name.setText(userModel.getName());
-                surname.setText(userModel.getSurName());
-                email.setText(userModel.getEmail());
-                topName.setText(userModel.getName());
+                name.setText(employerModel.getName());
+                surname.setText(employerModel.getSurName());
+                email.setText(employerModel.getEmail());
+                topName.setText(employerModel.getName());
+                //workplace.setText(employerModel.getName());
 
 
             }
@@ -125,9 +135,36 @@ public class UserProfileForEmployer extends AppCompatActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //do something
+
+                DatabaseReference ref = database.getReference().child("Employers").child(id).child("registeredUsers");
+                ArrayList<String> registeredUsers = new ArrayList<>();
+                ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                            String item = childSnapshot.getValue(String.class);
+                            registeredUsers.add(item);
+
+                        }
+
+
+                        if(!registeredUsers.contains(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                            String currentUserUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                            registeredUsers.add(currentUserUid);
+                            ref.setValue(registeredUsers);
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+
+                });
+
             }
+
         });
     }
-
 }
