@@ -18,6 +18,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import Models.EmployerModel;
+
 import com.example.internsprint2.Profiles.EmployerProfileActivity;
 import com.example.internsprint2.Profiles.UserProfileActivity;
 
@@ -37,54 +38,53 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         auth = FirebaseAuth.getInstance();
-        database=FirebaseDatabase.getInstance();
-        progressDialog=new ProgressDialog(MainActivity.this);
-        progressDialog.show();
-        progressDialog.setContentView(R.layout.progress_dialog);
-        progressDialog.getWindow().setBackgroundDrawableResource(
-                android.R.color.transparent
-        );
+        database = FirebaseDatabase.getInstance();
+
+
 
         if (auth.getCurrentUser() != null) {
+            progressDialog = new ProgressDialog(MainActivity.this);
+            progressDialog.show();
+            progressDialog.setContentView(R.layout.progress_dialog);
+            progressDialog.getWindow().setBackgroundDrawableResource(
+                    android.R.color.transparent
+            );
             database.getReference().child("Employers").child(auth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+
                     EmployerModel employerModel = snapshot.getValue(EmployerModel.class);
-                            Intent intent;
-                            try {
-                                if (employerModel.getEmail() != null) {
-                                    intent = new Intent(MainActivity.this, EmployerProfileActivity.class);
+                    Intent intent;
+                    try {
+                        if (employerModel.getEmail() != null) {
+                            intent = new Intent(MainActivity.this, EmployerProfileActivity.class);
 
-                                    progressDialog.dismiss();
-                                startActivity(intent);
-                                 finish();
-                                }
-
-                            } catch (Exception ex) {
-                                intent = new Intent(MainActivity.this, UserProfileActivity.class);
-                                progressDialog.dismiss();
-                                startActivity(intent);
-                                finish();
-                            }
+                            startActivity(intent);
+                            progressDialog.dismiss();
+                            finish();
                         }
+
+                    } catch (Exception ex) {
+                        intent = new Intent(MainActivity.this, UserProfileActivity.class);
+
+                        startActivity(intent);
+                        progressDialog.dismiss();
+                        finish();
+                    }
+
+                }
 
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-
+                    progressDialog.dismiss();
                 }
+
             });
+
         }
-        progressDialog.dismiss();
+
         super.onCreate(savedInstanceState);
-
-
-            /*Intent intent = new Intent(MainActivity.this, EmployersActivity.class);
-            startActivity(intent);*/
-            /*Intent intent = new Intent(MainActivity.this, UsersActivity.class);
-            startActivity(intent);
-            Intent intent = new Intent(MainActivity.this, RegistrationAsUserActivity.class);
-            startActivity(intent);*/
 
 
 

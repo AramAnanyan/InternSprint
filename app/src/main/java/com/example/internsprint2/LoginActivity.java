@@ -80,14 +80,10 @@ public class LoginActivity extends AppCompatActivity {
                                     finish();
                                 }
                             } catch (Exception ex) {
-
-
                                 intent = new Intent(LoginActivity.this, UserProfileActivity.class);
                                 startActivity(intent);
                                 finish();
                             }
-
-
                         }
 
                         @Override
