@@ -26,8 +26,6 @@ import Models.UserModel;
 
 public class RegistrationAsUserActivity extends AppCompatActivity {
     EditText name;
-    EditText surName;
-
     EditText email;
     EditText password;
     EditText surname;
@@ -71,8 +69,6 @@ public class RegistrationAsUserActivity extends AppCompatActivity {
         String userEmail = email.getText().toString();
         String userPassword = password.getText().toString();
         String userSurName = surname.getText().toString();
-
-
 
         if(TextUtils.isEmpty(userName)){
             //Toast.makeText(MainActivity.this, "username cant be null", Toast.LENGTH_SHORT).show();

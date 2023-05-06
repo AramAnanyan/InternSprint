@@ -90,7 +90,28 @@ public class EmployerProfileForEmployer extends AppCompatActivity {
                     case R.id.profile:
 
 
-                        drawerLayout.closeDrawer(GravityCompat.START);
+                        database.getReference().child("Employers").child(auth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                EmployerModel employerModel = snapshot.getValue(EmployerModel.class);
+                                Intent intent;
+                                try {
+                                    if (employerModel.getEmail() != null) {
+                                        intent = new Intent(EmployerProfileForEmployer.this, EmployerProfileActivity.class);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                } catch (Exception ex) {
+                                    intent = new Intent(EmployerProfileForEmployer.this, UserProfileActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
                         break;
                 }
                 return true;

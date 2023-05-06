@@ -40,8 +40,6 @@ public class UsersActivity extends AppCompatActivity {
 
     FirebaseFirestore firestore;
     CollectionReference usersRef;
-
-
     DrawerLayout drawerLayout;
     NavigationView navigationView;
 
@@ -49,7 +47,7 @@ public class UsersActivity extends AppCompatActivity {
 
     FirebaseAuth auth;
     RecyclerView recyclerViewUsers;
-    //RecyclerView recyclerViewWorkers;
+
 
     UsersAdapters usersAdapters;
     List<UserModel> userModelList;
@@ -70,15 +68,10 @@ public class UsersActivity extends AppCompatActivity {
         recyclerViewUsers.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
         userModelList = new ArrayList<>();
         ImageView navigBar = findViewById(R.id.navigationBar);
-
-
         navigBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 drawerLayout.openDrawer(GravityCompat.START);
-
             }
         });
         navigationView.setItemIconTintList(null);
@@ -109,24 +102,17 @@ public class UsersActivity extends AppCompatActivity {
                                 EmployerModel employerModel = snapshot.getValue(EmployerModel.class);
                                 Intent intent;
                                 try {
-
                                     if (employerModel.getEmail() != null) {
                                         intent = new Intent(UsersActivity.this, EmployerProfileActivity.class);
                                         startActivity(intent);
                                         finish();
                                     }
                                 } catch (Exception ex) {
-
-
                                     intent = new Intent(UsersActivity.this, UserProfileActivity.class);
                                     startActivity(intent);
                                     finish();
                                 }
-
-
                             }
-
-
                             @Override
                             public void onCancelled(@NonNull DatabaseError error) {
 
@@ -134,9 +120,6 @@ public class UsersActivity extends AppCompatActivity {
                         });
                         break;
                 }
-
-
-
                 return true;
             }
         });
@@ -148,17 +131,12 @@ public class UsersActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     for (DocumentSnapshot documentSnapshot : task.getResult()) {
                         UserModel userModel = documentSnapshot.toObject(UserModel.class);
-
                         userModel.setName(documentSnapshot.getString("userName"));
                         userModel.setSurName(documentSnapshot.getString("userSurName"));
                         userModel.setEmail(documentSnapshot.getString("userEmail"));
                         userModel.setId(documentSnapshot.getString("userId"));
-
                         userModelList.add(userModel);
-
                         usersAdapters.notifyDataSetChanged();
-
-
                     }
                 } else {
                     Toast.makeText(getApplicationContext(), "Սխալ։" + task.getException(), Toast.LENGTH_SHORT).show();
@@ -166,10 +144,7 @@ public class UsersActivity extends AppCompatActivity {
                 }
             }
         });
-
-
         usersAdapters = new UsersAdapters(getApplicationContext(), userModelList);
-
         recyclerViewUsers.setAdapter(usersAdapters);
     }
 

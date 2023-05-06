@@ -25,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import Models.EmployerModel;
 import Models.UserModel;
 
 
@@ -92,9 +93,28 @@ public class UserProfileForEmployer extends AppCompatActivity {
                         // startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
                         break;
                     case R.id.profile:
+                        database.getReference().child("Employers").child(auth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                EmployerModel employerModel = snapshot.getValue(EmployerModel.class);
+                                Intent intent;
+                                try {
+                                    if (employerModel.getEmail() != null) {
+                                        intent = new Intent(UserProfileForEmployer.this, EmployerProfileActivity.class);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                } catch (Exception ex) {
+                                    intent = new Intent(UserProfileForEmployer.this, UserProfileActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
 
-
-                        drawerLayout.closeDrawer(GravityCompat.START);
+                            }
+                        });
                         break;
                 }
                 return true;

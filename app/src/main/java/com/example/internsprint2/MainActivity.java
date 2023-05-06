@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -25,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
     Button btnRegisterUser;
     Button btnRegisterEmployer;
     Button btnLogin;
+    ProgressDialog progressDialog;
+
 
     FirebaseAuth auth;
     FirebaseDatabase database;
@@ -35,6 +38,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         auth = FirebaseAuth.getInstance();
         database=FirebaseDatabase.getInstance();
+        progressDialog=new ProgressDialog(MainActivity.this);
+        progressDialog.show();
+        progressDialog.setContentView(R.layout.progress_dialog);
+        progressDialog.getWindow().setBackgroundDrawableResource(
+                android.R.color.transparent
+        );
+
         if (auth.getCurrentUser() != null) {
             database.getReference().child("Employers").child(auth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -44,12 +54,14 @@ public class MainActivity extends AppCompatActivity {
                             try {
                                 if (employerModel.getEmail() != null) {
                                     intent = new Intent(MainActivity.this, EmployerProfileActivity.class);
+                                    progressDialog.dismiss();
                                 startActivity(intent);
                                  finish();
                                 }
 
                             } catch (Exception ex) {
                                 intent = new Intent(MainActivity.this, UserProfileActivity.class);
+                                progressDialog.dismiss();
                                 startActivity(intent);
                                 finish();
                             }

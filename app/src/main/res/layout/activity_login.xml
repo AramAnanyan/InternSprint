@@ -1,60 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
     tools:context=".LoginActivity">
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
     <EditText
         android:id="@+id/emailLogin"
-        android:layout_width="246dp"
-        android:layout_height="51dp"
-        android:layout_marginTop="196dp"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
         android:background="@drawable/custom_input"
         android:inputType="textEmailAddress"
         android:drawableStart="@drawable/ic_mail"
         android:paddingLeft="5dp"
         android:drawablePadding="12dp"
-        android:gravity="center"
         android:hint="email"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
     <EditText
         android:id="@+id/passwordLogin"
-        android:layout_width="246dp"
-        android:layout_height="51dp"
-        android:layout_marginTop="272dp"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/custom_input"
         android:inputType="textPassword"
         android:drawableStart="@drawable/ic_lock"
         android:paddingLeft="5dp"
         android:drawablePadding="12dp"
-        android:gravity="center"
         android:hint="password"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
     <Button
         android:id="@+id/btnLogin"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
         android:text="Login"
         android:background="@drawable/button_background"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.07"
-        app:layout_constraintHorizontal_bias="0.506"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.601"
-        app:layout_constraintWidth_percent="0.6" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        />
+    </LinearLayout>
+
+</LinearLayout>

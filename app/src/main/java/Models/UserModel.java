@@ -5,14 +5,12 @@ public class UserModel {
     private String email;
     private String password;
     private String surName;
-    private String biography;
+
     private String id;
 
 
 
     public UserModel() {
-
-
     }
     public UserModel(String name, String email, String password,String surName,String id) {
 
@@ -21,7 +19,14 @@ public class UserModel {
         this.surName = surName;
         this.password = password;
         this.id=id;
-        this.biography=null;
+
+    }
+    public UserModel(String name, String email, String password,String surName) {
+
+        this.name = name;
+        this.email = email;
+        this.surName = surName;
+        this.password = password;
 
     }
 
@@ -64,13 +69,7 @@ public class UserModel {
     public void setSurName(String surName) {
         this.surName = surName;
     }
-    public String getBiography() {
-        return biography;
-    }
 
-    public void setBiography(String biography) {
-        this.biography = biography;
-    }
 
 
 

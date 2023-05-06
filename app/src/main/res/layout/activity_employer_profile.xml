@@ -160,11 +160,27 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/more"
+            android:text="More"
+            android:layout_gravity="center_horizontal"
+            android:textSize="18dp"
+            android:layout_marginTop="10dp"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/regUsers"
+            android:text="Registered users"
+            android:layout_gravity="center_horizontal"
+            android:textSize="18dp"
+            android:layout_marginTop="5dp"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:id="@+id/logout"
             android:text="Log out"
             android:layout_gravity="center_horizontal"
             android:textSize="18dp"
-            android:layout_marginTop="15dp"/>
+            android:layout_marginTop="5dp"/>
 
     </LinearLayout>
     <com.google.android.material.navigation.NavigationView

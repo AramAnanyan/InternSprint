@@ -1,138 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:gravity="center"
+    android:orientation="vertical"
     tools:context=".RegistrationAsEmployerActivity">
 
-
-    <EditText
-        android:id="@+id/surname"
-        android:layout_width="246dp"
-        android:layout_height="51dp"
-
-
-        android:layout_marginTop="94dp"
-
-        android:background="@drawable/custom_input"
-
-        android:drawableStart="@drawable/ic_name_et"
-        android:drawablePadding="12dp"
-        android:gravity="center"
-        android:hint="surname"
-        android:inputType="text"
-        android:paddingLeft="5dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.194"
-        tools:ignore="MissingConstraints" />
-
-    <EditText
-        android:id="@+id/name"
-        android:layout_width="246dp"
-        android:layout_height="51dp"
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
 
-        android:layout_marginTop="94dp"
+        <EditText
+            android:id="@+id/name"
+            android:layout_width="250dp"
+            android:layout_height="50dp"
+            android:background="@drawable/custom_input"
+            android:drawableStart="@drawable/ic_name_et"
+            android:drawablePadding="12dp"
+            android:hint="name"
+            android:inputType="text"
+            android:paddingLeft="5dp"
+            tools:ignore="MissingConstraints" />
 
-        android:background="@drawable/custom_input"
+        <EditText
+            android:id="@+id/surname"
+            android:layout_width="250dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/custom_input"
+            android:drawableStart="@drawable/ic_name_et"
+            android:drawablePadding="12dp"
+            android:hint="surname"
+            android:inputType="text"
+            android:paddingLeft="5dp"
+            tools:ignore="MissingConstraints" />
 
-        android:drawableStart="@drawable/ic_name_et"
-        android:drawablePadding="12dp"
-        android:gravity="center"
-        android:hint="name"
-        android:inputType="text"
-        android:paddingLeft="5dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.083"
-        tools:ignore="MissingConstraints" />
+        <EditText
+            android:id="@+id/email"
+            android:layout_width="250dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/custom_input"
+            android:drawableStart="@drawable/ic_mail"
+            android:drawablePadding="12dp"
+            android:hint="email"
+            android:inputType="textEmailAddress"
+            android:paddingLeft="5dp"
+            tools:ignore="MissingConstraints" />
 
-    <EditText
-        android:id="@+id/email"
-        android:layout_width="246dp"
-        android:layout_height="51dp"
-        android:layout_marginTop="272dp"
-        android:background="@drawable/custom_input"
+        <EditText
+            android:id="@+id/workplace"
+            android:layout_width="250dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/custom_input"
 
-        android:drawableStart="@drawable/ic_mail"
-        android:drawablePadding="12dp"
+            android:drawableStart="@drawable/ic_work"
+            android:drawablePadding="12dp"
+            android:hint="workplace"
+            android:inputType="text"
+            android:paddingLeft="5dp"
+            tools:ignore="MissingConstraints" />
 
-        android:gravity="center"
-        android:hint="email"
-        android:inputType="textEmailAddress"
-        android:paddingLeft="5dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="250dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/custom_input"
 
-    <EditText
-        android:id="@+id/workplace"
-        android:layout_width="246dp"
-        android:layout_height="51dp"
-        android:layout_marginTop="340dp"
-        android:background="@drawable/custom_input"
+            android:drawableStart="@drawable/ic_lock"
+            android:drawablePadding="12dp"
+            android:hint="password"
+            android:inputType="textPassword"
+            android:paddingLeft="5dp"
+            tools:ignore="MissingConstraints" />
 
-        android:drawableStart="@drawable/ic_work"
-        android:drawablePadding="12dp"
-
-        android:gravity="center"
-
-        android:hint="workplace"
-        android:inputType="textPassword"
-        android:paddingLeft="5dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.509"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
-
-    <EditText
-        android:id="@+id/password"
-        android:layout_width="246dp"
-        android:layout_height="51dp"
-        android:layout_marginTop="404dp"
-        android:background="@drawable/custom_input"
-
-        android:drawableStart="@drawable/ic_lock"
-        android:drawablePadding="12dp"
-
-        android:gravity="center"
-
-        android:hint="password"
-        android:inputType="textPassword"
-        android:paddingLeft="5dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
-
-    <Button
-        android:id="@+id/btnRegister"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@drawable/button_background"
-        android:text="Register"
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.07"
-        app:layout_constraintHorizontal_bias="0.512"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.707"
-        app:layout_constraintWidth_percent="0.6" />
+        <Button
+            android:id="@+id/btnRegister"
+            android:layout_width="250dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/button_background"
+            android:text="Register" />
+    </LinearLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

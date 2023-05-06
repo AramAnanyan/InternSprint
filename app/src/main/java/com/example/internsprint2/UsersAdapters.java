@@ -31,7 +31,6 @@ public class UsersAdapters extends RecyclerView.Adapter<UsersAdapters.ViewHolder
     private Context context;
     private List<UserModel> userModelList;
     FirebaseDatabase database;
-
     FirebaseAuth auth;
     FirebaseFirestore firestore;
 
@@ -51,7 +50,6 @@ public class UsersAdapters extends RecyclerView.Adapter<UsersAdapters.ViewHolder
 
         holder.name.setText(userModelList.get(position).getName());
         holder.userSurName.setText(userModelList.get(position).getSurName());
-
         String id=userModelList.get(position).getId();
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {

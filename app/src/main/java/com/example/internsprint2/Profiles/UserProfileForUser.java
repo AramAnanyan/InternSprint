@@ -25,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import Models.EmployerModel;
 import Models.UserModel;
 
 
@@ -60,6 +61,7 @@ public class UserProfileForUser extends AppCompatActivity {
         ImageView navigBar = findViewById(R.id.navigationBar);
 
 
+
         navigBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,9 +93,28 @@ public class UserProfileForUser extends AppCompatActivity {
                         // startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
                         break;
                     case R.id.profile:
+                        database.getReference().child("Employers").child(auth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                EmployerModel employerModel = snapshot.getValue(EmployerModel.class);
+                                Intent intent;
+                                try {
+                                    if (employerModel.getEmail() != null) {
+                                        intent = new Intent(UserProfileForUser.this, EmployerProfileActivity.class);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                } catch (Exception ex) {
+                                    intent = new Intent(UserProfileForUser.this, UserProfileActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
 
-
-                        drawerLayout.closeDrawer(GravityCompat.START);
+                            }
+                        });
                         break;
                 }
                 return true;
@@ -105,13 +126,10 @@ public class UserProfileForUser extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 UserModel userModel = snapshot.getValue(UserModel.class);
 
-
                 name.setText(userModel.getName());
                 surname.setText(userModel.getSurName());
                 email.setText(userModel.getEmail());
                 topName.setText(userModel.getName());
-
-
             }
 
             @Override
@@ -121,12 +139,6 @@ public class UserProfileForUser extends AppCompatActivity {
         });
 
 
-        register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //do something
-            }
-        });
     }
 
 }

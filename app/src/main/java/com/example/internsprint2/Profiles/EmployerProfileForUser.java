@@ -63,7 +63,7 @@ public class EmployerProfileForUser extends AppCompatActivity {
         TextView email = findViewById(R.id.profileEmail);
         TextView surname = findViewById(R.id.profileSurName);
         TextView topName = findViewById(R.id.profileNameTop);
-        TextView workplace = findViewById(R.id.workplace);
+        TextView workplace = findViewById(R.id.profileWorkplace);
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.nav);
 
@@ -101,9 +101,28 @@ public class EmployerProfileForUser extends AppCompatActivity {
                         // startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
                         break;
                     case R.id.profile:
+                        database.getReference().child("Employers").child(auth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                EmployerModel employerModel = snapshot.getValue(EmployerModel.class);
+                                Intent intent;
+                                try {
+                                    if (employerModel.getEmail() != null) {
+                                        intent = new Intent(EmployerProfileForUser.this, EmployerProfileActivity.class);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                } catch (Exception ex) {
+                                    intent = new Intent(EmployerProfileForUser.this, UserProfileActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
 
-
-                        drawerLayout.closeDrawer(GravityCompat.START);
+                            }
+                        });
                         break;
                 }
                 return true;
@@ -120,7 +139,7 @@ public class EmployerProfileForUser extends AppCompatActivity {
                 surname.setText(employerModel.getSurName());
                 email.setText(employerModel.getEmail());
                 topName.setText(employerModel.getName());
-                //workplace.setText(employerModel.getName());
+                workplace.setText(employerModel.getName());
 
 
             }
@@ -146,8 +165,6 @@ public class EmployerProfileForUser extends AppCompatActivity {
                             registeredUsers.add(item);
 
                         }
-
-
                         if(!registeredUsers.contains(FirebaseAuth.getInstance().getCurrentUser().getUid())){
                             String currentUserUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
                             registeredUsers.add(currentUserUid);

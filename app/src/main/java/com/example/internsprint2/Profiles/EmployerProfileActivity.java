@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.example.internsprint2.EmployersActivity;
 import com.example.internsprint2.MainActivity;
 import com.example.internsprint2.R;
+import com.example.internsprint2.RegisteredUsers;
 import com.example.internsprint2.UsersActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,6 +43,7 @@ public class EmployerProfileActivity extends AppCompatActivity {
         firestore = FirebaseFirestore.getInstance();
         setContentView(R.layout.activity_employer_profile);
         Button logout=findViewById(R.id.logout);
+        Button regUsers=findViewById(R.id.regUsers);
         TextView name = findViewById(R.id.profileName);
         TextView email = findViewById(R.id.profileEmail);
         TextView surname = findViewById(R.id.profileSurName);
@@ -85,13 +87,9 @@ public class EmployerProfileActivity extends AppCompatActivity {
                         // startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
                         break;
                     case R.id.profile:
-
                         drawerLayout.closeDrawer(GravityCompat.START);
                         break;
                 }
-
-
-
                 return true;
             }
         });
@@ -123,6 +121,13 @@ public class EmployerProfileActivity extends AppCompatActivity {
                 Intent intent=new Intent(EmployerProfileActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
+            }
+        });
+        regUsers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(EmployerProfileActivity.this, RegisteredUsers.class);
+                startActivity(intent);
             }
         });
     }
