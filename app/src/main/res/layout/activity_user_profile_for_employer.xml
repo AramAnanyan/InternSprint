@@ -164,14 +164,7 @@
             android:layout_gravity="center_horizontal"
             android:textSize="18dp"
             android:layout_marginTop="15dp"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/reg"
-            android:text="Register"
-            android:layout_gravity="center_horizontal"
-            android:textSize="18dp"
-            android:layout_marginTop="15dp"/>
+
 
     </LinearLayout>
     <com.google.android.material.navigation.NavigationView

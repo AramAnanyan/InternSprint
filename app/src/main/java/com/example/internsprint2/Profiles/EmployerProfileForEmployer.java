@@ -123,14 +123,11 @@ public class EmployerProfileForEmployer extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 EmployerModel employerModel = snapshot.getValue(EmployerModel.class);
 
-
                 name.setText(employerModel.getName());
                 surname.setText(employerModel.getSurName());
                 email.setText(employerModel.getEmail());
                 topName.setText(employerModel.getName());
                 workplace.setText(employerModel.getWorkPlace());
-
-
             }
 
             @Override
@@ -143,7 +140,7 @@ public class EmployerProfileForEmployer extends AppCompatActivity {
         more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //do something
+
             }
         });
     }

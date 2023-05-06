@@ -142,12 +142,7 @@ public class UserProfileForEmployer extends AppCompatActivity {
         });
 
 
-        register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //do something
-            }
-        });
+
     }
 
 }

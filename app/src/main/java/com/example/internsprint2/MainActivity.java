@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
                             try {
                                 if (employerModel.getEmail() != null) {
                                     intent = new Intent(MainActivity.this, EmployerProfileActivity.class);
+
                                     progressDialog.dismiss();
                                 startActivity(intent);
                                  finish();
@@ -74,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
+        progressDialog.dismiss();
         super.onCreate(savedInstanceState);
 
 
