@@ -130,8 +130,6 @@ public class UserProfileForUser extends AppCompatActivity {
 
             }
         });
-
-
         more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

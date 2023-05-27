@@ -44,6 +44,7 @@ public class MoreEmployerForLogged extends AppCompatActivity {
         EditText surname=findViewById(R.id.surname);
         EditText phone=findViewById(R.id.phone);
         EditText workplace=findViewById(R.id.workplace);
+        EditText role=findViewById(R.id.role);
         EditText about=findViewById(R.id.about);
         Button save=findViewById(R.id.btnSave);
         database.getReference().child("Employers").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -60,6 +61,9 @@ public class MoreEmployerForLogged extends AppCompatActivity {
                 }
                 if (employerModel.getWorkPlace()!=null){
                     workplace.setText(employerModel.getWorkPlace());
+                }
+                if (employerModel.getRole()!=null){
+                    role.setText(employerModel.getRole());
                 }
             }
             @Override
@@ -90,6 +94,7 @@ public class MoreEmployerForLogged extends AppCompatActivity {
                                             updatedData.put("surname", surname.getText().toString());
                                             updatedData.put("phone", phone.getText().toString());
                                             updatedData.put("workplace", workplace.getText().toString());
+                                            updatedData.put("role", role.getText().toString());
                                             updatedData.put("about", about.getText().toString());
 
                                             Map<String, Object> updatedData2 = new HashMap<>();
@@ -97,6 +102,7 @@ public class MoreEmployerForLogged extends AppCompatActivity {
                                             updatedData2.put("surName", surname.getText().toString());
                                             updatedData2.put("phone", phone.getText().toString());
                                             updatedData2.put("workPlace", workplace.getText().toString());
+                                            updatedData2.put("role", role.getText().toString());
                                             updatedData2.put("about", about.getText().toString());
 
 

@@ -6,6 +6,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -64,13 +65,12 @@ public class EmployersActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.nav);
+        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.refresh);
         recyclerViewEmployers = findViewById(R.id.recyclerViewEmployers);
         recyclerViewEmployers.setVisibility(View.VISIBLE);
         recyclerViewEmployers.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
         employers = new ArrayList<>();
         ImageView navigBar = findViewById(R.id.navigationBar);
-
-
         navigBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,17 +110,11 @@ public class EmployersActivity extends AppCompatActivity {
                                         finish();
                                     }
                                 } catch (Exception ex) {
-
-
                                     intent = new Intent(EmployersActivity.this, UserProfileActivity.class);
                                     startActivity(intent);
                                     finish();
                                 }
-
-
                             }
-
-
                             @Override
                             public void onCancelled(@NonNull DatabaseError error) {
 
@@ -128,17 +122,34 @@ public class EmployersActivity extends AppCompatActivity {
                         });
                         break;
                 }
-
-
                 return true;
             }
         });
+
+        employersAdapter = new EmployersAdapter(getApplicationContext(), employers);
+        recyclerViewEmployers.setAdapter(employersAdapter);
+
+        retrieveEmployers();
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Refresh the invitations list
+                retrieveEmployers();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+    }
+    private void retrieveEmployers(){
+
         firestore.collection("Employers").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
                 if (task.isSuccessful()) {
+                    employers.clear();
                     for (DocumentSnapshot documentSnapshot : task.getResult()) {
                         EmployerModel employerModel = documentSnapshot.toObject(EmployerModel.class);
 
@@ -159,11 +170,6 @@ public class EmployersActivity extends AppCompatActivity {
                 }
             }
         });
-
-
-        employersAdapter = new EmployersAdapter(getApplicationContext(), employers);
-
-        recyclerViewEmployers.setAdapter(employersAdapter);
     }
 
 }

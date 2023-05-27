@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.internsprint2.ConfirmedUsers;
 import com.example.internsprint2.EmployersActivity;
 import com.example.internsprint2.MainActivity;
 import com.example.internsprint2.MoreEmployerForLogged;
@@ -47,6 +48,7 @@ public class EmployerProfileActivity extends AppCompatActivity {
         Button logout=findViewById(R.id.logout);
         Button regUsers=findViewById(R.id.regUsers);
         Button more =findViewById(R.id.more);
+        Button confirmed =findViewById(R.id.confirmedUsers);
         TextView name = findViewById(R.id.profileName);
         TextView email = findViewById(R.id.profileEmail);
         TextView surname = findViewById(R.id.profileSurName);
@@ -73,7 +75,6 @@ public class EmployerProfileActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.users:
-
                         Intent intent=new Intent(EmployerProfileActivity.this, UsersActivity.class);
                         startActivity(intent);
                         finish();
@@ -138,6 +139,13 @@ public class EmployerProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent=new Intent(EmployerProfileActivity.this, MoreEmployerForLogged.class);
                 intent.putExtra("id",auth.getCurrentUser().getUid());
+                startActivity(intent);
+            }
+        });
+        confirmed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(EmployerProfileActivity.this, ConfirmedUsers.class);
                 startActivity(intent);
             }
         });

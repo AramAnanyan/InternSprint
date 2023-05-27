@@ -6,6 +6,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -123,12 +124,29 @@ public class UsersActivity extends AppCompatActivity {
                 return true;
             }
         });
+        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.refresh);
+        usersAdapters = new UsersAdapters(getApplicationContext(), userModelList);
+        recyclerViewUsers.setAdapter(usersAdapters);
+
+        retrieveUsers();
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Refresh the invitations list
+                retrieveUsers();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+    }
+
+    private void retrieveUsers(){
         firestore.collection("Users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
+                    userModelList.clear();
                     for (DocumentSnapshot documentSnapshot : task.getResult()) {
                         UserModel userModel = documentSnapshot.toObject(UserModel.class);
                         userModel.setName(documentSnapshot.getString("userName"));
@@ -139,13 +157,10 @@ public class UsersActivity extends AppCompatActivity {
                         usersAdapters.notifyDataSetChanged();
                     }
                 } else {
-                    Toast.makeText(getApplicationContext(), "Սխալ։" + task.getException(), Toast.LENGTH_SHORT).show();
-
+                    Toast.makeText(getApplicationContext(), "error։ " + task.getException(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
-        usersAdapters = new UsersAdapters(getApplicationContext(), userModelList);
-        recyclerViewUsers.setAdapter(usersAdapters);
     }
 
 }

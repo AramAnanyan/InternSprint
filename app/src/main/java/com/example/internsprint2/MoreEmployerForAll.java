@@ -43,6 +43,7 @@ public class MoreEmployerForAll extends AppCompatActivity {
         EditText surname = findViewById(R.id.surname);
         EditText phone = findViewById(R.id.phone);
         EditText workplace = findViewById(R.id.workplace);
+        EditText role = findViewById(R.id.role);
         EditText about = findViewById(R.id.about);
         Button back=findViewById(R.id.btnBack);
 
@@ -51,6 +52,7 @@ public class MoreEmployerForAll extends AppCompatActivity {
         surname.setEnabled(false);
         phone.setEnabled(false);
         workplace.setEnabled(false);
+        role.setEnabled(false);
         about.setEnabled(false);
         database.getReference().child("Employers").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -67,6 +69,9 @@ public class MoreEmployerForAll extends AppCompatActivity {
                 
                 if (employerModel.getWorkPlace() != null) {
                     workplace.setText(employerModel.getWorkPlace());
+                }
+                if (employerModel.getRole() != null) {
+                    role.setText(employerModel.getRole());
                 }
             }
 
