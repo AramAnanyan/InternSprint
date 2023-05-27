@@ -14,8 +14,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.internsprint2.EmailSender;
 import com.example.internsprint2.EmployersActivity;
+import com.example.internsprint2.MoreEmployerForAll;
 import com.example.internsprint2.R;
 import com.example.internsprint2.UsersActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -33,11 +36,6 @@ import java.util.ArrayList;
 
 import Models.EmployerModel;
 import Models.UserModel;
-
-
-
-
-
 
 
 public class EmployerProfileForUser extends AppCompatActivity {
@@ -118,6 +116,7 @@ public class EmployerProfileForUser extends AppCompatActivity {
                                     finish();
                                 }
                             }
+
                             @Override
                             public void onCancelled(@NonNull DatabaseError error) {
 
@@ -156,6 +155,22 @@ public class EmployerProfileForUser extends AppCompatActivity {
             public void onClick(View v) {
 
                 DatabaseReference ref = database.getReference().child("Employers").child(id).child("registeredUsers");
+                final String[] name = new String[1];
+                final String[] surname = new String[1];
+                database.getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        UserModel userModel = snapshot.getValue(UserModel.class);
+                        name[0] = userModel.getName();
+                        surname[0] = userModel.getSurName();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
                 ArrayList<String> registeredUsers = new ArrayList<>();
                 ref.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -165,10 +180,14 @@ public class EmployerProfileForUser extends AppCompatActivity {
                             registeredUsers.add(item);
 
                         }
-                        if(!registeredUsers.contains(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                        if (!registeredUsers.contains(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                             String currentUserUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
                             registeredUsers.add(currentUserUid);
                             ref.setValue(registeredUsers);
+
+                            //EmailSender.sendEmail(email.getText().toString(),"Request for Interview Registration","I hope this message finds you well. I am writing to kindly request your assistance in scheduling an interview for a candidate who has expressed keen interest in joining your company.\n" + "Candidate's Name: " + name[0] + " " + surname[0]+"\ncheck Registered Users in InternSprint to find him(her)"+"\n Thank you very much for your attention to this matter. We genuinely appreciate your time and consideration.");
+
+                            Toast.makeText(EmployerProfileForUser.this,"successfully registered",Toast.LENGTH_SHORT).show();
                         }
 
                     }
@@ -180,8 +199,17 @@ public class EmployerProfileForUser extends AppCompatActivity {
 
                 });
 
+
             }
 
+        });
+        more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(EmployerProfileForUser.this, MoreEmployerForAll.class);
+                intent.putExtra("id",id);
+                startActivity(intent);
+            }
         });
     }
 }

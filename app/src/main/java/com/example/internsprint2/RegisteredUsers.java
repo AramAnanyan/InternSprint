@@ -74,7 +74,6 @@ public class RegisteredUsers extends AppCompatActivity {
                 for (DataSnapshot childSnapshot : snapshot.getChildren()) {
                     UserModel item = childSnapshot.getValue(UserModel.class);
 
-
                     if(registeredUsers.contains(childSnapshot.getKey())){
                         item.setEmail(childSnapshot.child("email").getValue(String.class));
                         item.setName(childSnapshot.child("name").getValue(String.class));

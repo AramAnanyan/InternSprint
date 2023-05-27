@@ -32,7 +32,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
-                android:background="#A8178E13"
+                android:background="@drawable/gradient_more"
                 android:orientation="vertical">
 
                 <androidx.cardview.widget.CardView
@@ -72,7 +72,9 @@
             android:orientation="vertical"
             android:gravity="center"
             android:layout_marginTop="30dp">
+
             <LinearLayout
+                android:background="@android:drawable/dialog_holo_light_frame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -95,6 +97,7 @@
 
             </LinearLayout>
             <LinearLayout
+                android:background="@android:drawable/dialog_holo_light_frame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -117,6 +120,7 @@
 
             </LinearLayout>
             <LinearLayout
+                android:background="@android:drawable/dialog_holo_light_frame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -139,6 +143,7 @@
 
             </LinearLayout>
             <LinearLayout
+                android:background="@android:drawable/dialog_holo_light_frame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"

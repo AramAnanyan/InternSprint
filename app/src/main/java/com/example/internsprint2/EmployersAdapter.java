@@ -41,7 +41,7 @@ public class EmployersAdapter extends RecyclerView.Adapter<EmployersAdapter.View
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.user_item, parent, false));
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.employer_item, parent, false));
     }
 
     @Override
@@ -49,6 +49,7 @@ public class EmployersAdapter extends RecyclerView.Adapter<EmployersAdapter.View
 
         holder.name.setText(employerModelList.get(position).getName());
         holder.surName.setText(employerModelList.get(position).getSurName());
+        holder.workPlace.setText(employerModelList.get(position).getWorkPlace());
         String id=employerModelList.get(position).getId();
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -102,12 +103,14 @@ public class EmployersAdapter extends RecyclerView.Adapter<EmployersAdapter.View
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView name, surName;
+        TextView name, surName, role, workPlace;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.userName);
             surName = itemView.findViewById(R.id.userSurName);
+            workPlace = itemView.findViewById(R.id.workPlace);
+            role = itemView.findViewById(R.id.role);
         }
     }
 }

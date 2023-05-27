@@ -30,12 +30,14 @@ public class RegistrationAsEmployerActivity extends AppCompatActivity {
     EditText surName;
     EditText workPlace;
     EditText email;
+    EditText role;
     EditText password;
     Button btnRegister;
 
     FirebaseAuth auth;
     FirebaseDatabase database;
     FirebaseFirestore firestore;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -53,6 +55,7 @@ public class RegistrationAsEmployerActivity extends AppCompatActivity {
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
         workPlace = findViewById(R.id.workplace);
+        role = findViewById(R.id.role);
         surName = findViewById(R.id.surname);
 
         btnRegister = findViewById(R.id.btnRegister);
@@ -72,6 +75,7 @@ public class RegistrationAsEmployerActivity extends AppCompatActivity {
         String employerPassword = password.getText().toString();
         String employerSurName = surName.getText().toString();
         String employerWorkPlace = workPlace.getText().toString();
+        String employerRole = role.getText().toString();
 
 
         if(TextUtils.isEmpty(employerName)){
@@ -83,6 +87,10 @@ public class RegistrationAsEmployerActivity extends AppCompatActivity {
             return;
         }
         if(TextUtils.isEmpty(employerWorkPlace)){
+            //Toast.makeText(MainActivity.this, "username cant be null", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(TextUtils.isEmpty(employerRole)){
             //Toast.makeText(MainActivity.this, "username cant be null", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -110,6 +118,7 @@ public class RegistrationAsEmployerActivity extends AppCompatActivity {
                     cartMap.put("surname", employerSurName);
                     cartMap.put("email", employerEmail);
                     cartMap.put("workPlace", employerWorkPlace);
+                    cartMap.put("role", employerRole);
                     cartMap.put("id", id);
                     cartMap.put("registeredUsers", employerModel.getRegUsers());
 

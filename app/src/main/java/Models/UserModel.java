@@ -5,7 +5,11 @@ public class UserModel {
     private String email;
     private String password;
     private String surName;
-
+    private String age;
+    private String phone;
+    private String workplace;
+    private String education;
+    private String about;
     private String id;
 
 
@@ -21,6 +25,19 @@ public class UserModel {
         this.id=id;
 
     }
+    /*public UserModel(String name, String email, String password,String surName,String id,String age,String phone,String education,String about,String workplace) {
+
+        this.name = name;
+        this.age = age;
+        this.workplace = workplace;
+        this.education = education;
+        this.about = about;
+        this.email = email;
+        this.surName = surName;
+        this.password = password;
+        this.id=id;
+
+    }*/
     public UserModel(String name, String email, String password,String surName) {
 
         this.name = name;
@@ -30,6 +47,45 @@ public class UserModel {
 
     }
 
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getWorkplace() {
+        return workplace;
+    }
+
+    public void setWorkplace(String workplace) {
+        this.workplace = workplace;
+    }
+
+    public String getEducation() {
+        return education;
+    }
+
+    public void setEducation(String education) {
+        this.education = education;
+    }
+
+    public String getAbout() {
+        return about;
+    }
+
+    public void setAbout(String about) {
+        this.about = about;
+    }
 
     public String getId() {
         return id;

@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.example.internsprint2.EmployersActivity;
 import com.example.internsprint2.MainActivity;
+import com.example.internsprint2.MoreUserForLogged;
 import com.example.internsprint2.R;
 import com.example.internsprint2.UsersActivity;
 import com.google.android.material.navigation.NavigationView;
@@ -30,8 +31,6 @@ import Models.UserModel;
 
 public class UserProfileActivity extends AppCompatActivity {
     FirebaseDatabase database;
-
-
     FirebaseAuth auth;
     FirebaseFirestore firestore;
     DrawerLayout drawerLayout;
@@ -43,6 +42,7 @@ public class UserProfileActivity extends AppCompatActivity {
         firestore = FirebaseFirestore.getInstance();
         setContentView(R.layout.activity_user_profile);
         Button logout=findViewById(R.id.logout);
+        Button more=findViewById(R.id.more);
         TextView name = findViewById(R.id.profileName);
         TextView email = findViewById(R.id.profileEmail);
         TextView surname = findViewById(R.id.profileSurName);
@@ -56,10 +56,7 @@ public class UserProfileActivity extends AppCompatActivity {
         navigBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 drawerLayout.openDrawer(GravityCompat.START);
-
             }
         });
         navigationView.setItemIconTintList(null);
@@ -75,20 +72,14 @@ public class UserProfileActivity extends AppCompatActivity {
                         startActivity(intent);
                         finish();
                         drawerLayout.closeDrawer(GravityCompat.START);
-
                         break;
-
                     case R.id.employers:
                         Intent intent2=new Intent(UserProfileActivity.this, EmployersActivity.class);
                         startActivity(intent2);
                         finish();
                         drawerLayout.closeDrawer(GravityCompat.START);
-
-                        // startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
                         break;
                     case R.id.profile:
-
-
                         drawerLayout.closeDrawer(GravityCompat.START);
                         break;
                 }
@@ -100,14 +91,10 @@ public class UserProfileActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 UserModel userModel = snapshot.getValue(UserModel.class);
-
-
                 name.setText(userModel.getName());
                 surname.setText(userModel.getSurName());
                 email.setText(userModel.getEmail());
                 topName.setText(userModel.getName());
-
-
             }
 
             @Override
@@ -126,6 +113,14 @@ public class UserProfileActivity extends AppCompatActivity {
                 finish();
             }
         });
+        more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(UserProfileActivity.this, MoreUserForLogged.class);
+                startActivity(intent);
+            }
+        });
+
 
 
     }

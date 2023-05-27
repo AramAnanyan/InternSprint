@@ -1,6 +1,7 @@
 package com.example.internsprint2.Profiles;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -15,15 +16,28 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.internsprint2.EmployersActivity;
+import com.example.internsprint2.MoreEmployerForAll;
+import com.example.internsprint2.MoreUserForAll;
 import com.example.internsprint2.R;
 import com.example.internsprint2.UsersActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import Models.EmployerModel;
 import Models.UserModel;
@@ -137,10 +151,13 @@ public class EmployerProfileForEmployer extends AppCompatActivity {
         });
 
 
+
         more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent=new Intent(EmployerProfileForEmployer.this, MoreEmployerForAll.class);
+                intent.putExtra("id",id);
+                startActivity(intent);
             }
         });
     }

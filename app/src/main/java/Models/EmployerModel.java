@@ -9,6 +9,9 @@ public class EmployerModel {
     private String email;
     private String password;
     private String workPlace;
+    private String role;
+    private String about;
+    private String phone;
 
     private String id;
     private ArrayList<String> registeredUsers;
@@ -30,9 +33,30 @@ public class EmployerModel {
         this.workPlace = workPlace;
         this.surName = surName;
     }
-    public EmployerModel(String name, String surName, String workPlace, String email, String password,String id,ArrayList<String> registeredUsers) {
+    public EmployerModel(String name, String surName, String workPlace,String role, String email, String password,String id) {
         this.registeredUsers=new ArrayList<String>();
+        this.role=role;
+        this.id=id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.workPlace = workPlace;
+        this.surName = surName;
+    }
+    public EmployerModel(String name, String surName, String workPlace, String email, String password,String id,ArrayList<String> registeredUsers) {
+        this.registeredUsers=registeredUsers;
 
+        this.id=id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.workPlace = workPlace;
+        this.surName = surName;
+    }
+    public EmployerModel(String name, String surName, String workPlace,String role, String email, String password,String id,ArrayList<String> registeredUsers) {
+        this.registeredUsers=registeredUsers;
+
+        this.role=role;
         this.id=id;
         this.name = name;
         this.email = email;
@@ -42,6 +66,30 @@ public class EmployerModel {
     }
 
 
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+    public String getAbout() {
+        return about;
+    }
+
+    public void setAbout(String about) {
+        this.about = about;
+    }
+
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
     public void addRegUserId(String id){
         registeredUsers.add(id);

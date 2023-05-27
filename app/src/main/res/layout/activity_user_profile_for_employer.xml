@@ -27,7 +27,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
-                android:background="#A8178E13"
+                android:background="@drawable/gradient_more"
                 android:orientation="vertical">
 
                 <androidx.cardview.widget.CardView
@@ -142,6 +142,7 @@
                 <ImageView
                     android:layout_width="45dp"
                     android:layout_height="45dp"
+
                     />
 
                 <TextView
@@ -164,6 +165,14 @@
             android:layout_gravity="center_horizontal"
             android:textSize="18dp"
             android:layout_marginTop="15dp"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/reg"
+            android:text="Invite for Interview"
+            android:layout_gravity="center_horizontal"
+            android:textSize="18dp"
+            android:layout_marginTop="10dp"/>
 
 
     </LinearLayout>

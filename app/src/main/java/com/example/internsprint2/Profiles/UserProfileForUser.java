@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.internsprint2.EmployersActivity;
+import com.example.internsprint2.MoreUserForAll;
 import com.example.internsprint2.R;
 import com.example.internsprint2.UsersActivity;
 import com.google.android.material.navigation.NavigationView;
@@ -29,15 +30,8 @@ import Models.EmployerModel;
 import Models.UserModel;
 
 
-
-
-
-
-
 public class UserProfileForUser extends AppCompatActivity {
     FirebaseDatabase database;
-
-
     FirebaseAuth auth;
     FirebaseFirestore firestore;
     DrawerLayout drawerLayout;
@@ -45,20 +39,19 @@ public class UserProfileForUser extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_profile_for_employer);
+        setContentView(R.layout.activity_user_profile_for_user);
         Intent intent=getIntent();
         String id=intent.getStringExtra("EXTRA");
         auth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
-        Button register=findViewById(R.id.more);
+        ImageView navigBar = findViewById(R.id.navigationBar);
+        Button more=findViewById(R.id.more);
         TextView name = findViewById(R.id.profileName);
         TextView email = findViewById(R.id.profileEmail);
         TextView surname = findViewById(R.id.profileSurName);
         TextView topName = findViewById(R.id.profileNameTop);
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.nav);
-
-        ImageView navigBar = findViewById(R.id.navigationBar);
 
 
 
@@ -139,6 +132,14 @@ public class UserProfileForUser extends AppCompatActivity {
         });
 
 
+        more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(UserProfileForUser.this, MoreUserForAll.class);
+                intent.putExtra("id",id);
+                startActivity(intent);
+            }
+        });
     }
 
 }

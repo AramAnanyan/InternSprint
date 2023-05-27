@@ -27,7 +27,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
-                android:background="#A8178E13"
+                android:background="@drawable/gradient_more"
                 android:orientation="vertical">
 
                 <androidx.cardview.widget.CardView
@@ -68,6 +68,7 @@
             android:gravity="center"
             android:layout_marginTop="30dp">
             <LinearLayout
+                android:background="@android:drawable/dialog_holo_light_frame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -90,6 +91,7 @@
 
             </LinearLayout>
             <LinearLayout
+                android:background="@android:drawable/dialog_holo_light_frame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -112,6 +114,7 @@
 
             </LinearLayout>
             <LinearLayout
+                android:background="@android:drawable/dialog_holo_light_frame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -133,27 +136,7 @@
                     android:layout_gravity="center_vertical"/>
 
             </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="25dp">
-                <ImageView
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:textColor="#000"
-                    android:textSize="18dp"
-                    android:paddingLeft="15dp"
-                    android:layout_gravity="center_vertical"/>
-
-            </LinearLayout>
         </LinearLayout>
 
         <Button

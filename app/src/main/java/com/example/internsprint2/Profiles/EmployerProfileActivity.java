@@ -16,6 +16,8 @@ import android.widget.TextView;
 
 import com.example.internsprint2.EmployersActivity;
 import com.example.internsprint2.MainActivity;
+import com.example.internsprint2.MoreEmployerForLogged;
+import com.example.internsprint2.MoreUserForAll;
 import com.example.internsprint2.R;
 import com.example.internsprint2.RegisteredUsers;
 import com.example.internsprint2.UsersActivity;
@@ -44,6 +46,7 @@ public class EmployerProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_employer_profile);
         Button logout=findViewById(R.id.logout);
         Button regUsers=findViewById(R.id.regUsers);
+        Button more =findViewById(R.id.more);
         TextView name = findViewById(R.id.profileName);
         TextView email = findViewById(R.id.profileEmail);
         TextView surname = findViewById(R.id.profileSurName);
@@ -130,5 +133,14 @@ public class EmployerProfileActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(EmployerProfileActivity.this, MoreEmployerForLogged.class);
+                intent.putExtra("id",auth.getCurrentUser().getUid());
+                startActivity(intent);
+            }
+        });
+
     }
 }

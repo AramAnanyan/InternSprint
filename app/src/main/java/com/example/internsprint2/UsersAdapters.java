@@ -34,6 +34,7 @@ public class UsersAdapters extends RecyclerView.Adapter<UsersAdapters.ViewHolder
     FirebaseAuth auth;
     FirebaseFirestore firestore;
 
+
     public UsersAdapters(Context context, List<UserModel> userModelList) {
         this.context = context;
         this.userModelList = userModelList;
