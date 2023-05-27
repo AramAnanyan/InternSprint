@@ -15,16 +15,15 @@ public class EmployerModel {
 
     private String id;
     private ArrayList<String> registeredUsers;
+    private ArrayList<String> confirmedUsers;
 
 
     public EmployerModel() {
-
-
-
     }
 
     public EmployerModel(String name, String surName, String workPlace, String email, String password,String id) {
         this.registeredUsers=new ArrayList<String>();
+        this.confirmedUsers=new ArrayList<String>();
 
         this.id=id;
         this.name = name;
@@ -35,6 +34,7 @@ public class EmployerModel {
     }
     public EmployerModel(String name, String surName, String workPlace,String role, String email, String password,String id) {
         this.registeredUsers=new ArrayList<String>();
+        this.confirmedUsers=new ArrayList<String>();
         this.role=role;
         this.id=id;
         this.name = name;
@@ -45,7 +45,7 @@ public class EmployerModel {
     }
     public EmployerModel(String name, String surName, String workPlace, String email, String password,String id,ArrayList<String> registeredUsers) {
         this.registeredUsers=registeredUsers;
-
+        this.confirmedUsers=new ArrayList<String>();
         this.id=id;
         this.name = name;
         this.email = email;
@@ -55,7 +55,7 @@ public class EmployerModel {
     }
     public EmployerModel(String name, String surName, String workPlace,String role, String email, String password,String id,ArrayList<String> registeredUsers) {
         this.registeredUsers=registeredUsers;
-
+        this.confirmedUsers=new ArrayList<String>();
         this.role=role;
         this.id=id;
         this.name = name;

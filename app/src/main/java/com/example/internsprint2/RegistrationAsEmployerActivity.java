@@ -19,6 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -112,6 +113,7 @@ public class RegistrationAsEmployerActivity extends AppCompatActivity {
                     database.getReference().child("Employers").child(id).setValue(employerModel);
 
                     database.getReference().child("Employers").child(id).child("registeredUsers").setValue(employerModel.getRegUsers());
+                    database.getReference().child("Employers").child(id).child("confirmedUsers").setValue(new ArrayList<String>());
 
                     final HashMap<String,Object> cartMap = new HashMap<>();
                     cartMap.put("name", employerName);
@@ -121,6 +123,7 @@ public class RegistrationAsEmployerActivity extends AppCompatActivity {
                     cartMap.put("role", employerRole);
                     cartMap.put("id", id);
                     cartMap.put("registeredUsers", employerModel.getRegUsers());
+                    cartMap.put("confirmedUsers", new ArrayList<String>());
 
                     firestore.collection("Employers").add(cartMap).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                         @Override

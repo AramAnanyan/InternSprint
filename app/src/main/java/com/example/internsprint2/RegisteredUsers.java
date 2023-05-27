@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -39,60 +40,81 @@ public class RegisteredUsers extends AppCompatActivity {
     RecyclerView recyclerViewUsers;
     UsersAdapters usersAdapters;
     List<UserModel> userModelList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registered_users);
 
-        database=FirebaseDatabase.getInstance();
+        database = FirebaseDatabase.getInstance();
         firestore = FirebaseFirestore.getInstance();
-        userModelList=new ArrayList<>();
+        userModelList = new ArrayList<>();
         recyclerViewUsers = findViewById(R.id.recyclerViewRegUsers);
         recyclerViewUsers.setVisibility(View.VISIBLE);
         recyclerViewUsers.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
 
+        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.refresh);
+        usersAdapters = new UsersAdapters(getApplicationContext(), userModelList);
+        recyclerViewUsers.setAdapter(usersAdapters);
+        retrieveInvitations();
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Refresh the invitations list
+                retrieveInvitations();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+    }
+
+    private void retrieveInvitations() {
         DatabaseReference ref = database.getReference().child("Employers").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("registeredUsers");
         ArrayList<String> registeredUsers = new ArrayList<>();
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                registeredUsers.clear();
                 for (DataSnapshot childSnapshot : snapshot.getChildren()) {
                     String item = childSnapshot.getValue(String.class);
-                    Log.i("asd",item);
+                    Log.i("asd", item);
                     registeredUsers.add(item);
                 }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
-        ref=database.getReference().child("Users");
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-                    UserModel item = childSnapshot.getValue(UserModel.class);
+                DatabaseReference ref1 = database.getReference().child("Users");
+                ref1.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        userModelList.clear();
+                        for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                            UserModel item = childSnapshot.getValue(UserModel.class);
 
-                    if(registeredUsers.contains(childSnapshot.getKey())){
-                        item.setEmail(childSnapshot.child("email").getValue(String.class));
-                        item.setName(childSnapshot.child("name").getValue(String.class));
-                        item.setSurName(childSnapshot.child("surName").getValue(String.class));
-                        item.setPassword(childSnapshot.child("password").getValue(String.class));
-                        item.setId(childSnapshot.getKey());
+                            if (registeredUsers.contains(childSnapshot.getKey())) {
+                                item.setEmail(childSnapshot.child("email").getValue(String.class));
+                                item.setName(childSnapshot.child("name").getValue(String.class));
+                                item.setSurName(childSnapshot.child("surName").getValue(String.class));
+                                item.setPassword(childSnapshot.child("password").getValue(String.class));
+                                item.setId(childSnapshot.getKey());
 
-                        userModelList.add(item);
+                                userModelList.add(item);
+                            }
+                        }
+
                         usersAdapters.notifyDataSetChanged();
                     }
-                }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        // Handle error
+                    }
+                });
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                // Handle error
             }
         });
-
-        usersAdapters = new UsersAdapters(getApplicationContext(), userModelList);
-        recyclerViewUsers.setAdapter(usersAdapters);
     }
 }
+
