@@ -110,8 +110,8 @@ public class RegistrationAsEmployerActivity extends AppCompatActivity {
                     String id = Objects.requireNonNull(task.getResult().getUser()).getUid();
                     EmployerModel employerModel = new EmployerModel(employerName, employerSurName, employerWorkPlace,employerEmail,employerPassword,id);
                     database.getReference().child("Employers").child(id).setValue(employerModel);
-                    database.getReference().child("Employers").child(id).child("registeredUsers").setValue(employerModel.getRegUsers());
 
+                    database.getReference().child("Employers").child(id).child("registeredUsers").setValue(employerModel.getRegUsers());
 
                     final HashMap<String,Object> cartMap = new HashMap<>();
                     cartMap.put("name", employerName);

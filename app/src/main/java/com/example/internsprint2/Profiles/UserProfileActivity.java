@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.internsprint2.EmployersActivity;
+import com.example.internsprint2.Invitations;
 import com.example.internsprint2.MainActivity;
 import com.example.internsprint2.MoreUserForLogged;
 import com.example.internsprint2.R;
@@ -43,6 +44,7 @@ public class UserProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_profile);
         Button logout=findViewById(R.id.logout);
         Button more=findViewById(R.id.more);
+        Button invitations=findViewById(R.id.employersInvitations);
         TextView name = findViewById(R.id.profileName);
         TextView email = findViewById(R.id.profileEmail);
         TextView surname = findViewById(R.id.profileSurName);
@@ -117,6 +119,13 @@ public class UserProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(UserProfileActivity.this, MoreUserForLogged.class);
+                startActivity(intent);
+            }
+        });
+        invitations.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(UserProfileActivity.this, Invitations.class);
                 startActivity(intent);
             }
         });

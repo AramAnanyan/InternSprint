@@ -155,7 +155,7 @@ public class EmployerProfileForUser extends AppCompatActivity {
             public void onClick(View v) {
 
                 DatabaseReference ref = database.getReference().child("Employers").child(id).child("registeredUsers");
-                final String[] name = new String[1];
+                /*final String[] name = new String[1];
                 final String[] surname = new String[1];
                 database.getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -169,7 +169,7 @@ public class EmployerProfileForUser extends AppCompatActivity {
                     public void onCancelled(@NonNull DatabaseError error) {
 
                     }
-                });
+                });*/
 
                 ArrayList<String> registeredUsers = new ArrayList<>();
                 ref.addListenerForSingleValueEvent(new ValueEventListener() {

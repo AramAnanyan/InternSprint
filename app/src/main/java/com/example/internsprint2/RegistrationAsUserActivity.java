@@ -95,13 +95,16 @@ public class RegistrationAsUserActivity extends AppCompatActivity {
                     UserModel userModel = new UserModel(userName, userEmail, userPassword, userSurName,id);
 
                     database.getReference().child("Users").child(id).setValue(userModel);
+                    database.getReference().child("Users").child(id).child("invitations").setValue(userModel.getInvitations());
+
 
                     final HashMap<String,Object> cartMap = new HashMap<>();
                     cartMap.put("userName", userName);
                     cartMap.put("userSurName", userSurName);
                     cartMap.put("userEmail", userEmail);
                     cartMap.put("userId", id);
-                    cartMap.put("userBiography", "ok");
+                    cartMap.put("invitations", userModel.getInvitations());
+
 
 
                     firestore.collection("Users").add(cartMap).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {

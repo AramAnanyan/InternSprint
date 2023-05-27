@@ -1,6 +1,5 @@
 package com.example.internsprint2;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -12,52 +11,51 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.internsprint2.Profiles.EmployerProfileForEmployer;
+import com.example.internsprint2.Profiles.EmployerProfileForUser;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
+import Models.EmployerModel;
 import Models.UserModel;
 
-import com.example.internsprint2.Profiles.UserProfileForEmployer;
-import com.example.internsprint2.Profiles.UserProfileForUser;
 
 
-public class UsersAdapters extends RecyclerView.Adapter<UsersAdapters.ViewHolder> {
+public class InvitationsAdapter extends RecyclerView.Adapter<InvitationsAdapter.ViewHolder> {
     private Context context;
-    private List<UserModel> userModelList;
-    FirebaseDatabase database;
-    FirebaseAuth auth;
-    FirebaseFirestore firestore;
+    private List<EmployerModel> employerModelList;
+    private FirebaseDatabase database;
+    private FirebaseAuth auth;
 
-
-    public UsersAdapters(Context context, List<UserModel> userModelList) {
+    public InvitationsAdapter(Context context, List<EmployerModel> employerModelList) {
         this.context = context;
-        this.userModelList = userModelList;
+        this.employerModelList = employerModelList;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.user_item, parent, false));
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.employer_invitation_item, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        holder.name.setText(userModelList.get(position).getName());
-        holder.userSurName.setText(userModelList.get(position).getSurName());
-        String id=userModelList.get(position).getId();
+        holder.name.setText(employerModelList.get(position).getName());
+        holder.surName.setText(employerModelList.get(position).getSurName());
+        holder.workPlace.setText(employerModelList.get(position).getWorkPlace());
+        String id=employerModelList.get(position).getId();
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                database=FirebaseDatabase.getInstance();
-                auth=FirebaseAuth.getInstance();
+                database= FirebaseDatabase.getInstance();
+                auth= FirebaseAuth.getInstance();
                 Log.i("ABC",id);
                 database.getReference().child("Users").child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -65,28 +63,22 @@ public class UsersAdapters extends RecyclerView.Adapter<UsersAdapters.ViewHolder
                         UserModel userModel = snapshot.getValue(UserModel.class);
                         Intent intent;
                         try {
+
                             if (userModel.getEmail() != null) {
 
-                                intent = new Intent(context, UserProfileForUser.class);
+                                intent = new Intent(context, EmployerProfileForUser.class);
                                 intent.putExtra("EXTRA",id);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 context.startActivity(intent);
-
                             }
                         } catch (Exception ex) {
-
-
-                            intent = new Intent(context, UserProfileForEmployer.class);
+                            intent = new Intent(context, EmployerProfileForEmployer.class);
                             intent.putExtra("EXTRA",id);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             context.startActivity(intent);
 
                         }
-
-
                     }
-
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
 
@@ -94,26 +86,23 @@ public class UsersAdapters extends RecyclerView.Adapter<UsersAdapters.ViewHolder
                 });
             }
         });
-
     }
-
-
-
-
 
     @Override
     public int getItemCount() {
-        return userModelList.size();
+        return employerModelList.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView name, userSurName;
+        TextView name, surName, role, workPlace;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.userName);
-            userSurName = itemView.findViewById(R.id.userSurName);
+            surName = itemView.findViewById(R.id.userSurName);
+            workPlace = itemView.findViewById(R.id.workPlace);
+            role = itemView.findViewById(R.id.role);
         }
     }
 }

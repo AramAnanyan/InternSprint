@@ -1,5 +1,7 @@
 package Models;
 
+import java.util.ArrayList;
+
 public class UserModel {
     private String name;
     private String email;
@@ -11,6 +13,7 @@ public class UserModel {
     private String education;
     private String about;
     private String id;
+    private ArrayList<String> invitations;
 
 
 
@@ -18,33 +21,29 @@ public class UserModel {
     }
     public UserModel(String name, String email, String password,String surName,String id) {
 
+        invitations=new ArrayList<>();
         this.name = name;
         this.email = email;
         this.surName = surName;
         this.password = password;
         this.id=id;
+    }
+
+    public UserModel(String name, String email, String password,String surName,ArrayList<String> invitations) {
+
+        this.invitations=invitations;
+        this.name = name;
+        this.email = email;
+        this.surName = surName;
+        this.password = password;
 
     }
-    /*public UserModel(String name, String email, String password,String surName,String id,String age,String phone,String education,String about,String workplace) {
 
-        this.name = name;
-        this.age = age;
-        this.workplace = workplace;
-        this.education = education;
-        this.about = about;
-        this.email = email;
-        this.surName = surName;
-        this.password = password;
-        this.id=id;
-
-    }*/
-    public UserModel(String name, String email, String password,String surName) {
-
-        this.name = name;
-        this.email = email;
-        this.surName = surName;
-        this.password = password;
-
+    public ArrayList<String> getInvitations(){
+        return invitations;
+    }
+    public void setInvitations(ArrayList<String> invitations){
+        this.invitations=invitations;
     }
 
     public String getAge() {

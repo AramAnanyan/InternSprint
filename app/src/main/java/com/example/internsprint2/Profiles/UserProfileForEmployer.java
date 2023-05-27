@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.internsprint2.EmployersActivity;
 import com.example.internsprint2.MoreUserForAll;
@@ -22,23 +23,18 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
+
 import Models.EmployerModel;
 import Models.UserModel;
 
-
-
-
-
-
-
 public class UserProfileForEmployer extends AppCompatActivity {
     FirebaseDatabase database;
-
-
     FirebaseAuth auth;
     FirebaseFirestore firestore;
     DrawerLayout drawerLayout;
@@ -122,18 +118,14 @@ public class UserProfileForEmployer extends AppCompatActivity {
             }
         });
         database = FirebaseDatabase.getInstance();
-        database.getReference().child("Employers").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+        database.getReference().child("Users").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 UserModel userModel = snapshot.getValue(UserModel.class);
-
-
                 name.setText(userModel.getName());
                 surname.setText(userModel.getSurName());
                 email.setText(userModel.getEmail());
                 topName.setText(userModel.getName());
-
-
             }
 
             @Override
@@ -148,6 +140,36 @@ public class UserProfileForEmployer extends AppCompatActivity {
                 Intent intent=new Intent(UserProfileForEmployer.this, MoreUserForAll.class);
                 intent.putExtra("id",id);
                 startActivity(intent);
+            }
+        });
+        reg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatabaseReference ref = database.getReference().child("Users").child(id).child("invitations");
+                ArrayList<String> invitations = new ArrayList<>();
+                ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                            String item = childSnapshot.getValue(String.class);
+                            invitations.add(item);
+
+                        }
+                        if (!invitations.contains(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                            String currentUserUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                            invitations.add(currentUserUid);
+                            ref.setValue(invitations);
+
+                            //EmailSender.sendEmail(email.getText().toString(),"Request for Interview Registration","I hope this message finds you well. I am writing to kindly request your assistance in scheduling an interview for a candidate who has expressed keen interest in joining your company.\n" + "Candidate's Name: " + name[0] + " " + surname[0]+"\ncheck Registered Users in InternSprint to find him(her)"+"\n Thank you very much for your attention to this matter. We genuinely appreciate your time and consideration.");
+
+                            Toast.makeText(UserProfileForEmployer.this,"successfully invited",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
             }
         });
     }

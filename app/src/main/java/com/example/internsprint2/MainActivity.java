@@ -66,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
 
                     } catch (Exception ex) {
                         intent = new Intent(MainActivity.this, UserProfileActivity.class);
-
                         startActivity(intent);
                         progressDialog.dismiss();
                         finish();

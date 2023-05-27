@@ -96,7 +96,7 @@ public class MoreEmployerForLogged extends AppCompatActivity {
                                             updatedData2.put("name", name.getText().toString());
                                             updatedData2.put("surName", surname.getText().toString());
                                             updatedData2.put("phone", phone.getText().toString());
-                                            updatedData2.put("workplace", workplace.getText().toString());
+                                            updatedData2.put("workPlace", workplace.getText().toString());
                                             updatedData2.put("about", about.getText().toString());
 
 
