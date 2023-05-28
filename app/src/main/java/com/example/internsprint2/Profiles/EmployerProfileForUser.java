@@ -138,7 +138,7 @@ public class EmployerProfileForUser extends AppCompatActivity {
                 surname.setText(employerModel.getSurName());
                 email.setText(employerModel.getEmail());
                 topName.setText(employerModel.getName());
-                workplace.setText(employerModel.getName());
+                workplace.setText(employerModel.getWorkPlace());
 
 
             }

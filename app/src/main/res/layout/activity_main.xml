@@ -5,53 +5,70 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".MainActivity"
+    android:gravity="center"
     android:orientation="vertical"
-    android:gravity="center">
+    tools:context=".MainActivity">
 
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-    <Button
-        android:id="@+id/btnRegisterAsUser"
-        android:layout_width="250dp"
-        android:layout_height="50dp"
-        android:background="@drawable/button_background"
-        android:text="Register As job seeker"
 
-         />
+        <Button
+            android:id="@+id/btnRegisterAsUser"
+            android:layout_width="250dp"
+            android:layout_height="50dp"
+            android:background="@drawable/button_background"
+            android:text="Register As job seeker"
 
-    <Button
-        android:id="@+id/btnRegisterAsEmployer"
-        android:layout_width="250dp"
-        android:layout_height="50dp"
-        android:background="@drawable/button_background"
-        android:text="Register As employer"
-        android:layout_marginTop="10dp"
+            />
 
-        />
+        <Button
+            android:id="@+id/btnRegisterAsEmployer"
+            android:layout_width="250dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/button_background"
+            android:text="Register As employer"
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="or login if you already have an account"
-        tools:ignore="MissingConstraints"
-        android:layout_marginTop="20dp"
-         />
+            />
 
-    <Button
-        android:id="@+id/btnLogin"
-        android:layout_width="250dp"
-        android:layout_height="50dp"
-        android:background="@drawable/button_background"
-        android:layout_marginTop="20dp"
-        android:text="Login"
-        />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:text="or login if you already have an account"
+            tools:ignore="MissingConstraints" />
+
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="250dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/button_background"
+            android:text="Login" />
+
+
+        <Button
+            android:layout_gravity="center"
+            android:id="@+id/btnLoginUser"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="100dp"
+            android:background="@drawable/button_background"
+            android:text="User" />
+
+        <Button
+            android:layout_gravity="center"
+            android:id="@+id/btnLoginEmployer"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/button_background"
+            android:text="Employer" />
     </LinearLayout>
-
 
 
 </LinearLayout>

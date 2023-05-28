@@ -73,7 +73,6 @@ public class LoginActivity extends AppCompatActivity {
                             EmployerModel employerModel = snapshot.getValue(EmployerModel.class);
                             Intent intent;
                             try {
-
                                 if (employerModel.getEmail() != null) {
                                     intent = new Intent(LoginActivity.this, EmployerProfileActivity.class);
                                     startActivity(intent);
