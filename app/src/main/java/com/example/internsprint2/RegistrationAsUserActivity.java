@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -34,13 +35,12 @@ public class RegistrationAsUserActivity extends AppCompatActivity {
     FirebaseAuth auth;
     FirebaseDatabase database;
     FirebaseFirestore firestore;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration_as_user);
-
-
 
 
         auth = FirebaseAuth.getInstance();
@@ -70,57 +70,79 @@ public class RegistrationAsUserActivity extends AppCompatActivity {
         String userPassword = password.getText().toString();
         String userSurName = surname.getText().toString();
 
-        if(TextUtils.isEmpty(userName)){
+        if (TextUtils.isEmpty(userName)) {
             //Toast.makeText(MainActivity.this, "username cant be null", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(TextUtils.isEmpty(userSurName)){
+        if (TextUtils.isEmpty(userSurName)) {
             //Toast.makeText(MainActivity.this, "username cant be null", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if(TextUtils.isEmpty(userEmail)){
+        if (TextUtils.isEmpty(userEmail)) {
             //Toast.makeText(MainActivity.this, "email cant be null", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(TextUtils.isEmpty(userPassword)){
+        if (TextUtils.isEmpty(userPassword)) {
             //Toast.makeText(MainActivity.this, "password cant be null", Toast.LENGTH_SHORT).show();
             return;
         }
-        auth.createUserWithEmailAndPassword(userEmail, userPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    String id = Objects.requireNonNull(task.getResult().getUser()).getUid();
-                    UserModel userModel = new UserModel(userName, userEmail, userPassword, userSurName,id);
+        auth.createUserWithEmailAndPassword(userEmail, userPassword)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            FirebaseUser user = auth.getCurrentUser();
+                            if (user != null) {
+                                user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> verificationTask) {
+                                        if (verificationTask.isSuccessful()) {
+                                            Toast.makeText(RegistrationAsUserActivity.this,
+                                                    "Registration successful. Please check your email for verification.",
+                                                    Toast.LENGTH_LONG).show();
+                                            String id = Objects.requireNonNull(task.getResult().getUser()).getUid();
+                                            UserModel userModel = new UserModel(userName, userEmail, userPassword, userSurName, id);
 
-                    database.getReference().child("Users").child(id).setValue(userModel);
-                    database.getReference().child("Users").child(id).child("invitations").setValue(userModel.getInvitations());
+                                            database.getReference().child("Users").child(id).setValue(userModel);
+                                            database.getReference().child("Users").child(id).child("invitations").setValue(userModel.getInvitations());
 
 
-                    final HashMap<String,Object> cartMap = new HashMap<>();
-                    cartMap.put("userName", userName);
-                    cartMap.put("userSurName", userSurName);
-                    cartMap.put("userEmail", userEmail);
-                    cartMap.put("userId", id);
-                    cartMap.put("invitations", userModel.getInvitations());
+                                            final HashMap<String, Object> cartMap = new HashMap<>();
+                                            cartMap.put("userName", userName);
+                                            cartMap.put("userSurName", userSurName);
+                                            cartMap.put("userEmail", userEmail);
+                                            cartMap.put("userId", id);
+                                            cartMap.put("invitations", userModel.getInvitations());
 
 
+                                            firestore.collection("Users").add(cartMap).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<DocumentReference> task) {
+                                                    finish();
+                                                }
+                                            });
+                                            Intent intent = new Intent(RegistrationAsUserActivity.this, LoginActivity.class);
+                                            startActivity(intent);
+                                        } else {
+                                            Toast.makeText(RegistrationAsUserActivity.this,
+                                                    "Failed to send email verification.",
+                                                    Toast.LENGTH_SHORT).show();                                        }
+                                    }
 
-                    firestore.collection("Users").add(cartMap).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentReference> task) {
-                            Toast.makeText(RegistrationAsUserActivity.this, "successfully registered", Toast.LENGTH_SHORT).show();
-                            finish();
+                                });
+
+                            }
+
+                        }else {
+                            // Registration failed
+                            Toast.makeText(RegistrationAsUserActivity.this,
+                                    Objects.requireNonNull(task.getException()).getMessage(),
+                                    Toast.LENGTH_SHORT).show();
                         }
-                    });
-                    Intent intent = new Intent(RegistrationAsUserActivity.this, LoginActivity.class);
-                    startActivity(intent);
-                }
-                else{
-                    Toast.makeText(RegistrationAsUserActivity.this, Objects.requireNonNull(task.getException()).toString(), Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+
+                    }
+                });
     }
 }
+

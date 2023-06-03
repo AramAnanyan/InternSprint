@@ -2,6 +2,7 @@ package com.example.internsprint2;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -31,6 +33,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import Models.EmployerModel;
 import com.example.internsprint2.Profiles.EmployerProfileActivity;
@@ -45,6 +48,7 @@ public class EmployersActivity extends AppCompatActivity {
 
     DrawerLayout drawerLayout;
     NavigationView navigationView;
+    SearchView searchView;
 
 
     FirebaseAuth auth;
@@ -53,7 +57,7 @@ public class EmployersActivity extends AppCompatActivity {
     FirebaseDatabase database;
     EmployersAdapter employersAdapter;
     List<EmployerModel> employers;
-
+    String currentSearchQuery = "";
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,13 +67,24 @@ public class EmployersActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
         database = FirebaseDatabase.getInstance();
+
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.nav);
+        searchView = findViewById(R.id.searchView);
         SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.refresh);
         recyclerViewEmployers = findViewById(R.id.recyclerViewEmployers);
         recyclerViewEmployers.setVisibility(View.VISIBLE);
         recyclerViewEmployers.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
         employers = new ArrayList<>();
+
+        ProgressDialog progressDialog;
+        progressDialog = new ProgressDialog(EmployersActivity.this);
+
+        progressDialog.setContentView(R.layout.progress_dialog);
+        progressDialog.getWindow().setBackgroundDrawableResource(
+                android.R.color.transparent
+        );
+
         ImageView navigBar = findViewById(R.id.navigationBar);
         navigBar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,16 +146,55 @@ public class EmployersActivity extends AppCompatActivity {
 
         retrieveEmployers();
 
+        progressDialog.dismiss();
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                // Refresh the invitations list
-                retrieveEmployers();
+                if (currentSearchQuery.isEmpty()) {
+
+                    retrieveEmployers(); // No search query, retrieve all
+                } else {
+
+                    retrieveEmployers(currentSearchQuery.toLowerCase(Locale.ROOT)); // Pass the search query to retrieve filtered employers
+
+                }
                 swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                retrieveEmployers(query.toLowerCase(Locale.ROOT));
+
+                currentSearchQuery = query;
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                ProgressDialog progressDialog;
+                progressDialog = new ProgressDialog(EmployersActivity.this);
+                progressDialog.show();
+                progressDialog.setContentView(R.layout.progress_dialog);
+                progressDialog.getWindow().setBackgroundDrawableResource(
+                        android.R.color.transparent
+                );
+                retrieveEmployers(newText.toLowerCase(Locale.ROOT));
+                progressDialog.dismiss();
+                currentSearchQuery = newText;
+                return false;
             }
         });
     }
     private void retrieveEmployers(){
+        ProgressDialog progressDialog;
+        progressDialog = new ProgressDialog(EmployersActivity.this);
+        progressDialog.show();
+        progressDialog.setContentView(R.layout.progress_dialog);
+        progressDialog.getWindow().setBackgroundDrawableResource(
+                android.R.color.transparent
+        );
 
         firestore.collection("Employers").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 
@@ -161,12 +215,47 @@ public class EmployersActivity extends AppCompatActivity {
 
                         employers.add(employerModel);
                         employersAdapter.notifyDataSetChanged();
-
-
                     }
+                    progressDialog.dismiss();
                 } else {
                     Toast.makeText(getApplicationContext(), "error։" + task.getException(), Toast.LENGTH_SHORT).show();
 
+                    progressDialog.dismiss();
+                }
+            }
+        });
+    }
+    private void retrieveEmployers(String a) {
+
+
+        firestore.collection("Employers").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    employers.clear();
+
+                    for (DocumentSnapshot documentSnapshot : task.getResult()) {
+                        EmployerModel employerModel = documentSnapshot.toObject(EmployerModel.class);
+
+                        employerModel.setName(documentSnapshot.getString("name"));
+                        employerModel.setSurName(documentSnapshot.getString("surname"));
+                        employerModel.setEmail(documentSnapshot.getString("email"));
+                        employerModel.setWorkPlace(documentSnapshot.getString("workPlace"));
+
+                        String name = documentSnapshot.getString("name");
+                        String surname = documentSnapshot.getString("surname");
+                        String workPlace = documentSnapshot.getString("workPlace");
+
+                        if ((name != null && name.toLowerCase(Locale.ROOT).contains(a)) || (surname != null && surname.toLowerCase(Locale.ROOT).contains(a)) || (workPlace!= null && workPlace.toLowerCase(Locale.ROOT).contains(a)) || (name+surname).toLowerCase(Locale.ROOT).contains(a)) {
+
+                            employers.add(employerModel);
+                            employersAdapter.notifyDataSetChanged();
+                        }
+                    }
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "error: " + task.getException(), Toast.LENGTH_SHORT).show();
                 }
             }
         });

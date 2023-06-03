@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -46,8 +47,6 @@ public class RegistrationAsEmployerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_registration_as_employer);
 
 
-
-
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         firestore = FirebaseFirestore.getInstance();
@@ -64,6 +63,7 @@ public class RegistrationAsEmployerActivity extends AppCompatActivity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 register();
             }
         });
@@ -79,66 +79,99 @@ public class RegistrationAsEmployerActivity extends AppCompatActivity {
         String employerRole = role.getText().toString();
 
 
-        if(TextUtils.isEmpty(employerName)){
+        if (TextUtils.isEmpty(employerName)) {
             //Toast.makeText(MainActivity.this, "username cant be null", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(TextUtils.isEmpty(employerSurName)){
+        if (TextUtils.isEmpty(employerSurName)) {
             //Toast.makeText(MainActivity.this, "username cant be null", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(TextUtils.isEmpty(employerWorkPlace)){
+        if (TextUtils.isEmpty(employerWorkPlace)) {
             //Toast.makeText(MainActivity.this, "username cant be null", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(TextUtils.isEmpty(employerRole)){
+        if (TextUtils.isEmpty(employerRole)) {
             //Toast.makeText(MainActivity.this, "username cant be null", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(TextUtils.isEmpty(employerEmail)){
+        if (TextUtils.isEmpty(employerEmail)) {
             //Toast.makeText(MainActivity.this, "email cant be null", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(TextUtils.isEmpty(employerPassword)){
+        if (TextUtils.isEmpty(employerPassword)) {
             //Toast.makeText(MainActivity.this, "password cant be null", Toast.LENGTH_SHORT).show();
             return;
         }
-        auth.createUserWithEmailAndPassword(employerEmail, employerPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
+        auth.createUserWithEmailAndPassword(employerEmail, employerPassword)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Registration success
+                            FirebaseUser user = auth.getCurrentUser();
+                            if (user != null) {
+                                // Send email verification
+                                user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> verificationTask) {
+                                        if (verificationTask.isSuccessful()) {
+                                            // Email verification sent
+                                            Toast.makeText(RegistrationAsEmployerActivity.this,
+                                                    "Registration successful. Please check your email for verification.",
+                                                    Toast.LENGTH_LONG).show();
 
-                    String id = Objects.requireNonNull(task.getResult().getUser()).getUid();
-                    EmployerModel employerModel = new EmployerModel(employerName, employerSurName, employerWorkPlace,employerEmail,employerPassword,id);
-                    database.getReference().child("Employers").child(id).setValue(employerModel);
+                                            String id = Objects.requireNonNull(task.getResult().getUser()).getUid();
+                                            EmployerModel employerModel = new EmployerModel(employerName, employerSurName, employerWorkPlace, employerEmail, employerPassword, id);
+                                            database.getReference().child("Employers").child(id).setValue(employerModel);
 
-                    database.getReference().child("Employers").child(id).child("registeredUsers").setValue(employerModel.getRegUsers());
-                    database.getReference().child("Employers").child(id).child("confirmedUsers").setValue(new ArrayList<String>());
+                                            database.getReference().child("Employers").child(id).child("registeredUsers").setValue(employerModel.getRegUsers());
+                                            database.getReference().child("Employers").child(id).child("confirmedUsers").setValue(new ArrayList<String>());
 
-                    final HashMap<String,Object> cartMap = new HashMap<>();
-                    cartMap.put("name", employerName);
-                    cartMap.put("surname", employerSurName);
-                    cartMap.put("email", employerEmail);
-                    cartMap.put("workPlace", employerWorkPlace);
-                    cartMap.put("role", employerRole);
-                    cartMap.put("id", id);
-                    cartMap.put("registeredUsers", employerModel.getRegUsers());
-                    cartMap.put("confirmedUsers", new ArrayList<String>());
+                                            final HashMap<String, Object> cartMap = new HashMap<>();
+                                            cartMap.put("name", employerName);
+                                            cartMap.put("surname", employerSurName);
+                                            cartMap.put("email", employerEmail);
+                                            cartMap.put("workPlace", employerWorkPlace);
+                                            cartMap.put("role", employerRole);
+                                            cartMap.put("id", id);
+                                            cartMap.put("registeredUsers", employerModel.getRegUsers());
+                                            cartMap.put("confirmedUsers", new ArrayList<String>());
 
-                    firestore.collection("Employers").add(cartMap).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentReference> task) {
-                            Toast.makeText(RegistrationAsEmployerActivity.this, "successfully registered", Toast.LENGTH_SHORT).show();
-                            finish();
+                                            firestore.collection("Employers").add(cartMap).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<DocumentReference> task) {
+                                                    finish();
+                                                }
+                                            });
+
+
+                                            Intent intent = new Intent(RegistrationAsEmployerActivity.this, LoginActivity.class);
+                                            startActivity(intent);
+                                            // Enable the registration button
+                                            btnRegister.setEnabled(true);
+                                        } else {
+                                            // Failed to send email verification
+                                            Toast.makeText(RegistrationAsEmployerActivity.this,
+                                                    "Failed to send email verification.",
+                                                    Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+
+                            }
+                        } else {
+                            // Registration failed
+                            Toast.makeText(RegistrationAsEmployerActivity.this,
+                                    Objects.requireNonNull(task.getException()).getMessage(),
+                                    Toast.LENGTH_SHORT).show();
                         }
-                    });
-                    Intent intent = new Intent(RegistrationAsEmployerActivity.this, LoginActivity.class);
-                    startActivity(intent);
-                }
-                else{
-                    Toast.makeText(RegistrationAsEmployerActivity.this, Objects.requireNonNull(task.getException()).toString(), Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+                    }
+                });
+
     }
+
+
 }
+
+

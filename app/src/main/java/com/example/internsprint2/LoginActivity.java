@@ -66,30 +66,34 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    Toast.makeText(LoginActivity.this, "you are logged in", Toast.LENGTH_SHORT).show();
-                    database.getReference().child("Employers").child(auth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            EmployerModel employerModel = snapshot.getValue(EmployerModel.class);
-                            Intent intent;
-                            try {
-                                if (employerModel.getEmail() != null) {
-                                    intent = new Intent(LoginActivity.this, EmployerProfileActivity.class);
+                    if(auth.getCurrentUser().isEmailVerified()) {
+                        Toast.makeText(LoginActivity.this, "you are logged in", Toast.LENGTH_SHORT).show();
+                        database.getReference().child("Employers").child(auth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                EmployerModel employerModel = snapshot.getValue(EmployerModel.class);
+                                Intent intent;
+                                try {
+                                    if (employerModel.getEmail() != null) {
+                                        intent = new Intent(LoginActivity.this, EmployerProfileActivity.class);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                } catch (Exception ex) {
+                                    intent = new Intent(LoginActivity.this, UserProfileActivity.class);
                                     startActivity(intent);
                                     finish();
                                 }
-                            } catch (Exception ex) {
-                                intent = new Intent(LoginActivity.this, UserProfileActivity.class);
-                                startActivity(intent);
-                                finish();
                             }
-                        }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
 
-                        }
-                    });
+                            }
+                        });
+                    }else {
+                        Toast.makeText(LoginActivity.this,"please verify your email", Toast.LENGTH_LONG).show();
+                    }
 
                 } else {
                     Toast.makeText(LoginActivity.this, "error:" + task.getException(), Toast.LENGTH_SHORT).show();

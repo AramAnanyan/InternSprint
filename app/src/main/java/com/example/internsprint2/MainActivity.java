@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         if (auth.getCurrentUser() != null) {
+
             progressDialog = new ProgressDialog(MainActivity.this);
             progressDialog.show();
             progressDialog.setContentView(R.layout.progress_dialog);
@@ -64,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         if (employerModel.getEmail() != null) {
                             intent = new Intent(MainActivity.this, EmployerProfileActivity.class);
-
                             startActivity(intent);
                             progressDialog.dismiss();
                             finish();

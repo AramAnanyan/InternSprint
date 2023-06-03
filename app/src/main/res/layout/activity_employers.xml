@@ -17,19 +17,33 @@
             android:layout_height="match_parent"
             android:background="@drawable/gradient_background">
 
+
             <ImageView
                 android:id="@+id/navigationBar"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_margin="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
                 android:src="@drawable/ic_navigation" />
+
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/searchView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/back"
+                android:layout_marginTop="13dp"
+                android:layout_marginRight="55dp"
+                android:layout_toEndOf="@id/navigationBar"
+                android:layout_toRightOf="@id/navigationBar" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewEmployers"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@id/navigationBar"
-
                 android:clipToPadding="false"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
