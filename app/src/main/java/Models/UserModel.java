@@ -13,6 +13,7 @@ public class UserModel {
     private String education;
     private String about;
     private String id;
+    private String profilePicture;
     private ArrayList<String> invitations;
 
 
@@ -46,6 +47,13 @@ public class UserModel {
         this.invitations=invitations;
     }
 
+    public String getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
+    }
     public String getAge() {
         return age;
     }

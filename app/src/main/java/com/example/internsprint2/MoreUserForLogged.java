@@ -67,9 +67,7 @@ public class MoreUserForLogged extends AppCompatActivity {
                 if (userModel.getAge()!=null){
                     age.setText(userModel.getAge());
                 }
-                if (userModel.getWorkplace()!=null){
-                    workplace.setText(userModel.getWorkplace());
-                }
+
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {

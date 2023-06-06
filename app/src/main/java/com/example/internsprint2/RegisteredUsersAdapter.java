@@ -21,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import Models.UserModel;
@@ -30,7 +31,7 @@ import com.example.internsprint2.Profiles.UserProfileForUser;
 import com.squareup.picasso.Picasso;
 
 
-public class UsersAdapters extends RecyclerView.Adapter<UsersAdapters.ViewHolder> {
+public class RegisteredUsersAdapter extends RecyclerView.Adapter<RegisteredUsersAdapter.ViewHolder> {
     private Context context;
     private List<UserModel> userModelList;
     FirebaseDatabase database;
@@ -38,7 +39,7 @@ public class UsersAdapters extends RecyclerView.Adapter<UsersAdapters.ViewHolder
     FirebaseFirestore firestore;
 
 
-    public UsersAdapters(Context context, List<UserModel> userModelList) {
+    public RegisteredUsersAdapter(Context context, List<UserModel> userModelList) {
         this.context = context;
         this.userModelList = userModelList;
     }
@@ -46,11 +47,11 @@ public class UsersAdapters extends RecyclerView.Adapter<UsersAdapters.ViewHolder
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.user_item, parent, false));
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.user_item_2, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
         holder.name.setText(userModelList.get(position).getName());
         holder.userSurName.setText(userModelList.get(position).getSurName());
@@ -79,6 +80,35 @@ public class UsersAdapters extends RecyclerView.Adapter<UsersAdapters.ViewHolder
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 // Handle any errors that occur during the database operation
+            }
+        });
+
+        holder.delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                userModelList.remove(position);
+                notifyItemRemoved(position);
+                database = FirebaseDatabase.getInstance();
+                auth=FirebaseAuth.getInstance();
+                DatabaseReference ref = database.getReference().child("Employers").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("registeredUsers");
+                ArrayList<String> regUsers = new ArrayList<>();
+                ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                            String item = childSnapshot.getValue(String.class);
+                            regUsers.add(item);
+                        }
+                        regUsers.remove(id);
+                        ref.setValue(regUsers);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+
+                });
             }
         });
 
@@ -138,13 +168,14 @@ public class UsersAdapters extends RecyclerView.Adapter<UsersAdapters.ViewHolder
     class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView name, userSurName;
+        ImageView delete, image;
 
-        ImageView image;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            delete=itemView.findViewById(R.id.delete);
             name = itemView.findViewById(R.id.userName);
             userSurName = itemView.findViewById(R.id.userSurName);
-            image=itemView.findViewById(R.id.profileImage);
+            image = itemView.findViewById(R.id.profileImage);
         }
     }
 }

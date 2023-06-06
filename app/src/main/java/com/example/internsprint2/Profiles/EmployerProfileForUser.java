@@ -4,11 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -16,13 +17,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.internsprint2.EmailSender;
 import com.example.internsprint2.EmployersActivity;
-import com.example.internsprint2.MoreEmployerForAll;
 import com.example.internsprint2.R;
 import com.example.internsprint2.UsersActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -31,11 +28,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 import Models.EmployerModel;
-import Models.UserModel;
 
 
 public class EmployerProfileForUser extends AppCompatActivity {
@@ -55,16 +52,17 @@ public class EmployerProfileForUser extends AppCompatActivity {
         String id = intent.getStringExtra("EXTRA");
         auth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
-        Button register = findViewById(R.id.reg);
-        Button more = findViewById(R.id.more);
+        ImageView image=findViewById(R.id.profileImage);
+        Button register = findViewById(R.id.btnRegister);
+        register.setEnabled(true);
         TextView name = findViewById(R.id.profileName);
-        TextView email = findViewById(R.id.profileEmail);
-        TextView surname = findViewById(R.id.profileSurName);
-        TextView topName = findViewById(R.id.profileNameTop);
-        TextView workplace = findViewById(R.id.profileWorkplace);
-        drawerLayout = findViewById(R.id.drawerLayout);
-        navigationView = findViewById(R.id.nav);
+        TextView email = findViewById(R.id.email);
+        TextView workplace = findViewById(R.id.workplace);
+        TextView phone = findViewById(R.id.phone);
+        TextView about = findViewById(R.id.about);
+        TextView role = findViewById(R.id.role);
 
+        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.refresh);
         ImageView navigBar = findViewById(R.id.navigationBar);
 
 
@@ -128,17 +126,53 @@ public class EmployerProfileForUser extends AppCompatActivity {
             }
         });
         database = FirebaseDatabase.getInstance();
+        DatabaseReference employerRef = FirebaseDatabase.getInstance().getReference("Employers")
+                .child(id);
+
+        employerRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    String profilePictureUrl = snapshot.child("profilePicture").getValue(String.class);
+                    if (profilePictureUrl != null && !profilePictureUrl.isEmpty()) {
+                        // Load the profile picture using the URL using your preferred image loading library
+                        // For example, you can use Picasso or Glide
+                        // Here's an example using Picasso:
+                        Picasso.get().load(profilePictureUrl).into(image);
+                    } else {
+                        // Handle the case when the profile picture URL is empty or not available
+                    }
+                } else {
+                    // Handle the case when the employer's data does not exist in the database
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle any errors that occur during the database operation
+            }
+        });
         database.getReference().child("Employers").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 EmployerModel employerModel = snapshot.getValue(EmployerModel.class);
 
 
-                name.setText(employerModel.getName());
-                surname.setText(employerModel.getSurName());
+                name.setText(employerModel.getName() + " " + employerModel.getSurName());
                 email.setText(employerModel.getEmail());
-                topName.setText(employerModel.getName());
-                workplace.setText(employerModel.getWorkPlace());
+
+                if (employerModel.getPhone() != null) {
+                    phone.setText(employerModel.getPhone());
+                }
+                if (employerModel.getAbout() != null) {
+                    about.setText(employerModel.getAbout());
+                }
+                if (employerModel.getWorkPlace() != null) {
+                    workplace.setText(employerModel.getWorkPlace());
+                }
+                if (employerModel.getRole() != null) {
+                    role.setText(employerModel.getRole());
+                }
 
 
             }
@@ -150,26 +184,112 @@ public class EmployerProfileForUser extends AppCompatActivity {
         });
 
 
-        register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                DatabaseReference ref = database.getReference().child("Employers").child(id).child("registeredUsers");
-                /*final String[] name = new String[1];
-                final String[] surname = new String[1];
-                database.getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+
+
+
+
+        DatabaseReference ref = database.getReference().child("Employers").child(id).child("registeredUsers");
+
+
+        ArrayList<String> registeredUsers = new ArrayList<>();
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                    String item = childSnapshot.getValue(String.class);
+                    registeredUsers.add(item);
+
+                }
+                if (registeredUsers.contains(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+
+                    register.setText("Registered");
+                    register.setBackgroundColor(Color.GRAY);
+                    register.setEnabled(false);
+
+                } else {
+
+                    register.setEnabled(true);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+
+        });
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Refresh the invitations list
+                DatabaseReference employerRef = FirebaseDatabase.getInstance().getReference("Employers")
+                        .child(id);
+
+                employerRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        UserModel userModel = snapshot.getValue(UserModel.class);
-                        name[0] = userModel.getName();
-                        surname[0] = userModel.getSurName();
+                        if (snapshot.exists()) {
+                            String profilePictureUrl = snapshot.child("profilePicture").getValue(String.class);
+                            if (profilePictureUrl != null && !profilePictureUrl.isEmpty()) {
+                                // Load the profile picture using the URL using your preferred image loading library
+                                // For example, you can use Picasso or Glide
+                                // Here's an example using Picasso:
+                                Picasso.get().load(profilePictureUrl).into(image);
+                            } else {
+                                // Handle the case when the profile picture URL is empty or not available
+                            }
+                        } else {
+                            // Handle the case when the employer's data does not exist in the database
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        // Handle any errors that occur during the database operation
+                    }
+                });
+                database.getReference().child("Employers").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        EmployerModel employerModel = snapshot.getValue(EmployerModel.class);
+
+                        name.setText(employerModel.getName()+" "+employerModel.getSurName());
+                        email.setText(employerModel.getEmail());
+
+                        if (employerModel.getPhone()!=null){
+                            phone.setText(employerModel.getPhone());
+                        }
+                        if (employerModel.getAbout()!=null){
+                            about.setText(employerModel.getAbout());
+                        }
+                        if (employerModel.getWorkPlace()!=null){
+                            workplace.setText(employerModel.getWorkPlace());
+                        }
+                        if (employerModel.getRole()!=null){
+                            role.setText(employerModel.getRole());
+                        }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
 
                     }
-                });*/
+                });
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
+
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+
+                DatabaseReference ref = database.getReference().child("Employers").child(id).child("registeredUsers");
+
 
                 ArrayList<String> registeredUsers = new ArrayList<>();
                 ref.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -178,7 +298,6 @@ public class EmployerProfileForUser extends AppCompatActivity {
                         for (DataSnapshot childSnapshot : snapshot.getChildren()) {
                             String item = childSnapshot.getValue(String.class);
                             registeredUsers.add(item);
-
                         }
                         if (!registeredUsers.contains(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                             String currentUserUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -187,7 +306,10 @@ public class EmployerProfileForUser extends AppCompatActivity {
 
                             //EmailSender.sendEmail(email.getText().toString(),"Request for Interview Registration","I hope this message finds you well. I am writing to kindly request your assistance in scheduling an interview for a candidate who has expressed keen interest in joining your company.\n" + "Candidate's Name: " + name[0] + " " + surname[0]+"\ncheck Registered Users in InternSprint to find him(her)"+"\n Thank you very much for your attention to this matter. We genuinely appreciate your time and consideration.");
 
-                            Toast.makeText(EmployerProfileForUser.this,"successfully registered",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(EmployerProfileForUser.this, "successfully registered", Toast.LENGTH_SHORT).show();
+                            register.setText("Registered");
+                            register.setBackgroundColor(Color.GRAY);
+                            register.setEnabled(false);
                         }
 
                     }
@@ -203,13 +325,6 @@ public class EmployerProfileForUser extends AppCompatActivity {
             }
 
         });
-        more.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(EmployerProfileForUser.this, MoreEmployerForAll.class);
-                intent.putExtra("id",id);
-                startActivity(intent);
-            }
-        });
+
     }
 }

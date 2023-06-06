@@ -12,6 +12,7 @@ public class EmployerModel {
     private String role;
     private String about;
     private String phone;
+    private String profilePicture;
 
     private String id;
     private ArrayList<String> registeredUsers;
@@ -67,6 +68,13 @@ public class EmployerModel {
 
 
 
+    public String getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
+    }
     public String getRole() {
         return role;
     }

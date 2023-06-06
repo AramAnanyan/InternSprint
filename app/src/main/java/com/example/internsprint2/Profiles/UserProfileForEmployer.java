@@ -4,9 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,7 +18,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.internsprint2.EmployersActivity;
-import com.example.internsprint2.MoreUserForAll;
 import com.example.internsprint2.R;
 import com.example.internsprint2.UsersActivity;
 import com.google.android.material.navigation.NavigationView;
@@ -27,6 +28,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -47,17 +49,20 @@ public class UserProfileForEmployer extends AppCompatActivity {
         String id=intent.getStringExtra("EXTRA");
         auth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
-        Button reg=findViewById(R.id.reg);
-        Button more=findViewById(R.id.more);
+        Button invite=findViewById(R.id.invite);
+        ImageView image=findViewById(R.id.profileImage);
         TextView name = findViewById(R.id.profileName);
-        TextView email = findViewById(R.id.profileEmail);
-        TextView surname = findViewById(R.id.profileSurName);
-        TextView topName = findViewById(R.id.profileNameTop);
+        TextView email = findViewById(R.id.email);
+        TextView age = findViewById(R.id.age);
+        TextView phone = findViewById(R.id.phone);
+        TextView institution = findViewById(R.id.institution);
+        TextView about = findViewById(R.id.about);
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.nav);
-
+        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.refresh);
         ImageView navigBar = findViewById(R.id.navigationBar);
 
+        invite.setEnabled(true);
 
         navigBar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,15 +122,29 @@ public class UserProfileForEmployer extends AppCompatActivity {
                 return true;
             }
         });
+
         database = FirebaseDatabase.getInstance();
         database.getReference().child("Users").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 UserModel userModel = snapshot.getValue(UserModel.class);
-                name.setText(userModel.getName());
-                surname.setText(userModel.getSurName());
-                email.setText(userModel.getEmail());
-                topName.setText(userModel.getName());
+                name.setText(userModel.getName()+" "+userModel.getSurName());
+
+                if (userModel.getPhone()!=null && !userModel.getPhone().isEmpty()){
+                    phone.setText(userModel.getPhone());
+                }
+                if (userModel.getEmail()!=null && !userModel.getEmail().isEmpty()){
+                    email.setText(userModel.getEmail());
+                }
+                if (userModel.getAbout()!=null && !userModel.getAbout().isEmpty()){
+                    about.setText(userModel.getAbout());
+                }
+                if (userModel.getEducation()!=null && !userModel.getEducation().isEmpty()){
+                    institution.setText(userModel.getEducation());
+                }
+                if (userModel.getAge()!=null && !userModel.getAge().isEmpty()){
+                    age.setText(userModel.getAge());
+                }
             }
 
             @Override
@@ -133,18 +152,127 @@ public class UserProfileForEmployer extends AppCompatActivity {
 
             }
         });
+        DatabaseReference employerRef = FirebaseDatabase.getInstance().getReference("Users")
+                .child(id);
 
-        more.setOnClickListener(new View.OnClickListener() {
+        employerRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(UserProfileForEmployer.this, MoreUserForAll.class);
-                intent.putExtra("id",id);
-                startActivity(intent);
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    String profilePictureUrl = snapshot.child("profilePicture").getValue(String.class);
+                    if (profilePictureUrl != null && !profilePictureUrl.isEmpty()) {
+                        // Load the profile picture using the URL using your preferred image loading library
+                        // For example, you can use Picasso or Glide
+                        // Here's an example using Picasso:
+                        Picasso.get().load(profilePictureUrl).into(image);
+                    } else {
+                        // Handle the case when the profile picture URL is empty or not available
+                    }
+                } else {
+                    // Handle the case when the employer's data does not exist in the database
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle any errors that occur during the database operation
             }
         });
-        reg.setOnClickListener(new View.OnClickListener() {
+
+        DatabaseReference ref = database.getReference().child("Users").child(id).child("invitations");
+        ArrayList<String> invitations = new ArrayList<>();
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                    String item = childSnapshot.getValue(String.class);
+                    invitations.add(item);
+
+                }
+                if (invitations.contains(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                    invite.setText("Invited");
+                    invite.setBackgroundColor(Color.GRAY);
+                    invite.setEnabled(false);
+                }else{
+                    invite.setEnabled(true);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                DatabaseReference employerRef = FirebaseDatabase.getInstance().getReference("Users")
+                        .child(id);
+
+                employerRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            String profilePictureUrl = snapshot.child("profilePicture").getValue(String.class);
+                            if (profilePictureUrl != null && !profilePictureUrl.isEmpty()) {
+                                // Load the profile picture using the URL using your preferred image loading library
+                                // For example, you can use Picasso or Glide
+                                // Here's an example using Picasso:
+                                Picasso.get().load(profilePictureUrl).into(image);
+                            } else {
+                                // Handle the case when the profile picture URL is empty or not available
+                            }
+                        } else {
+                            // Handle the case when the employer's data does not exist in the database
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        // Handle any errors that occur during the database operation
+                    }
+                });
+                database.getReference().child("Users").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        UserModel userModel = snapshot.getValue(UserModel.class);
+                        name.setText(userModel.getName()+" "+userModel.getSurName());
+
+                        if (userModel.getPhone()!=null && !userModel.getPhone().isEmpty()){
+                            phone.setText(userModel.getPhone());
+                        }
+                        if (userModel.getEmail()!=null && !userModel.getEmail().isEmpty()){
+                            email.setText(userModel.getEmail());
+                        }
+                        if (userModel.getAbout()!=null && !userModel.getAbout().isEmpty()){
+                            about.setText(userModel.getAbout());
+                        }
+                        if (userModel.getEducation()!=null && !userModel.getEducation().isEmpty()){
+                            institution.setText(userModel.getEducation());
+                        }
+                        if (userModel.getAge()!=null && !userModel.getAge().isEmpty()){
+                            age.setText(userModel.getAge());
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
+
+        invite.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
+                invite.setText("Invited");
+                invite.setBackgroundColor(Color.GRAY);
+                invite.setEnabled(false);
                 DatabaseReference ref = database.getReference().child("Users").child(id).child("invitations");
                 ArrayList<String> invitations = new ArrayList<>();
                 ref.addListenerForSingleValueEvent(new ValueEventListener() {
