@@ -52,6 +52,7 @@ public class EmployerProfileForUser extends AppCompatActivity {
         String id = intent.getStringExtra("EXTRA");
         auth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
+        drawerLayout=findViewById(R.id.drawerLayout);
         ImageView image=findViewById(R.id.profileImage);
         Button register = findViewById(R.id.btnRegister);
         register.setEnabled(true);
@@ -62,6 +63,7 @@ public class EmployerProfileForUser extends AppCompatActivity {
         TextView about = findViewById(R.id.about);
         TextView role = findViewById(R.id.role);
 
+        navigationView = findViewById(R.id.nav);
         SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.refresh);
         ImageView navigBar = findViewById(R.id.navigationBar);
 

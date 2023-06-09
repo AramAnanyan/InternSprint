@@ -74,19 +74,7 @@
             android:paddingLeft="5dp"
             tools:ignore="MissingConstraints" />
 
-        <EditText
-            android:id="@+id/workplace"
-            android:layout_width="250dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="10dp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black"
-            android:background="@drawable/custom_input"
-            android:drawablePadding="12dp"
-            android:hint="workplace"
-            android:inputType="text"
-            android:paddingLeft="5dp"
-            tools:ignore="MissingConstraints" />
+
         <EditText
             android:id="@+id/education"
             android:layout_width="250dp"
